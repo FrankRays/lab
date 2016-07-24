@@ -11,6 +11,7 @@ public class UserPaper implements java.io.Serializable {
 	private Integer upId;
 	private User user;
 	private Paper paper;
+	private Integer order;
 	private Integer isCorr;
 
 	// Constructors
@@ -52,6 +53,14 @@ public class UserPaper implements java.io.Serializable {
 		this.paper = paper;
 	}
 
+	public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+
 	public Integer getIsCorr() {
 		return this.isCorr;
 	}
@@ -66,6 +75,7 @@ public class UserPaper implements java.io.Serializable {
 				"upId=" + upId +
 				", user=" + user +
 				", paper=" + paper +
+				", order=" + order +
 				", isCorr=" + isCorr +
 				'}';
 	}

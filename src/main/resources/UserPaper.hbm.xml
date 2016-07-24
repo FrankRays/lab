@@ -16,6 +16,9 @@
         <many-to-one name="paper" class="shu.lab.entity.Paper" fetch="select">
             <column name="paper_id" />
         </many-to-one>
+        <property name="order" type="java.lang.Integer">
+            <column name="order" />
+        </property>
         <property name="isCorr" type="java.lang.Integer">
             <column name="is_corr" />
         </property>

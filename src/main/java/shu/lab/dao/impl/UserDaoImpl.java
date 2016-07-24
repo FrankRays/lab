@@ -6,6 +6,8 @@ import shu.lab.dao.UserDao;
 import shu.lab.entity.User;
 import shu.lab.util.HibernateUtil;
 
+import java.util.List;
+
 /**
  * Created by Jimmy on 2016/7/10.
  */
@@ -33,5 +35,17 @@ public class UserDaoImpl implements UserDao {
             session.close();
         }
         return u;
+    }
+
+    public List<User> getUserList(Integer page, Integer num) {
+        return null;
+    }
+
+    public boolean addUser(User user) {
+        return false;
+    }
+
+    public void delUser(Integer uid) {
+
     }
 }
