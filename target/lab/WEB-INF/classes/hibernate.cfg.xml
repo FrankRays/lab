@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://114.215.153.154:3306/lab</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">19940125</property>
+        <property name="hibernate.search.autoregister_listeners">false</property>
+        <property name="hibernate.validator.apply_to_ddl">false</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <mapping resource="User.hbm.xml"/>
+        <mapping resource="Paper.hbm.xml"/>
+        <mapping resource="Project.hbm.xml"/>
+        <mapping resource="Authority.hbm.xml"/>
+        <mapping resource="Field.hbm.xml"/>
+        <mapping resource="FieldPaper.hbm.xml"/>
+        <mapping resource="FieldProject.hbm.xml"/>
+        <mapping resource="FieldUser.hbm.xml"/>
+        <mapping resource="Group.hbm.xml"/>
+        <mapping resource="GroupAuth.hbm.xml"/>
+        <mapping resource="Inform.hbm.xml"/>
+        <mapping resource="UserPaper.hbm.xml"/>
+        <mapping resource="UserProject.hbm.xml"/>
+
+        <!--<mapping resource="shu/lab/entity/UserEntity.hbm.xml"/>-->
+        <!--<mapping resource="UserEntity.hbm.xml"/>-->
+    </session-factory>
+</hibernate-configuration>

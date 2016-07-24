@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- <package name="conf1" namespace="/" extends="struts-default"> <action 
+		name="test_*" class="test" method="{1}"> <result name="success">/test.jsp</result> 
+		<result name="error">/index.jsp</result> </action> </package> -->
+
+	<package name="conf1" namespace="/" extends="struts-default">
+		<action name="test_*" class="test" method="{1}">
+			<result name="success">/test.jsp</result> 
+			<result name="error">/index.jsp</result>
+		</action>
+	</package>
+	<package name="ajax_conf" namespace="/" extends="json-default" >
+		<action name="ajax_*" class="ajax" method="{1}" >
+			<result name="success" type="json"/>
+		</action>
+	</package>
+</struts>
