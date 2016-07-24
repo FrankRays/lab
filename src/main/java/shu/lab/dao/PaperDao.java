@@ -12,10 +12,12 @@ public interface PaperDao {
     List<Paper> getFamousTenPaper();
     List<Paper> getPaperByUserId(Integer uid, Integer page, Integer num);
     List<Paper> getAllPaperByUserId(Integer uid);
-    boolean addPaper(List<Integer> authors, String extraAuthor, String title,
-                     String category, String CCFStatus, String postYear,
-                     String volNum, String issueNum, Integer startPage,
+    boolean addPaper(List<Integer> authors,List<Integer> corrAuthors, String extraAuthor,
+                     String extraCorrAuthor, String title, String category, String CCFStatus,
+                     String postYear, String volNum, String issueNum, Integer startPage,
                      Integer endPage, String url);
     void delPaper(Integer paperId);
+    void addPaperField(Integer pid, Integer fid);
+    void delPaperField(Integer pid, Integer fid);
 
 }

@@ -10,6 +10,9 @@ import java.util.List;
 public interface UserDao {
     User getUserById(Integer id);
     List<User> getUserList(Integer page, Integer num);
+    List<User> getAllUser();
     boolean addUser(User user);
     void delUser(Integer uid);
+    void addUserField(Integer fid, Integer uid);
+    void delUserField(Integer fid, Integer uid);
 }

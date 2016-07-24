@@ -1,8 +1,13 @@
 import junit.framework.TestCase;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import shu.lab.dao.impl.FieldDaoImpl;
+import shu.lab.dao.impl.PaperDaoImpl;
 import shu.lab.entity.User;
 import shu.lab.util.HibernateUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jimmy on 2016/7/10.
@@ -36,5 +41,28 @@ public class Test extends TestCase {
         } finally {
             util.closeSession(session);
         }
+    }
+    public void testCase2(){
+
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            //new FieldDaoImpl().addField("计算与建模");
+            //new FieldDaoImpl().delField(7);
+            List<Integer> authors = new ArrayList<Integer>();
+            authors.add(2);
+            authors.add(1);
+            authors.add(3);
+            List<Integer> corrAuthors = new ArrayList<Integer>();
+            corrAuthors.add(5);
+            corrAuthors.add(4);
+            //new PaperDaoImpl().addPaper(authors, corrAuthors, "liuxiang", "make", "关于神经网络的深度学习", "aaa", "A", "2016", "第5卷", "第8期", 25, 76,"locat");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
     }
 }

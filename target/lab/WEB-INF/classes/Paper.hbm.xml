@@ -13,6 +13,9 @@
         <property name="extraAuthor" type="java.lang.String">
             <column name="extra_author" />
         </property>
+        <property name="extraCorrAuthor" type="java.lang.String">
+            <column name="extra_corr_author" />
+        </property>
         <property name="title" type="java.lang.String">
             <column name="title" />
         </property>
@@ -39,6 +42,9 @@
         </property>
         <property name="endPage" type="java.lang.Integer">
             <column name="end_page" />
+        </property>
+        <property name="sourceUrl" type="java.lang.String">
+            <column name="source_url" />
         </property>
         <set name="userPapers" inverse="true">
             <key>

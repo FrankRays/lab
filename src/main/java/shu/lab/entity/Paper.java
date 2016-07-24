@@ -15,6 +15,7 @@ public class Paper implements java.io.Serializable {
 
 	private Integer paperId;
 	private String extraAuthor;
+	private String extraCorrAuthor;
 	private String title;
 	private String type;
 	private String category;
@@ -35,11 +36,12 @@ public class Paper implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Paper(String extraAuthor, String title, String type,
+	public Paper(String extraAuthor,String extraCorrAuthor, String title, String type,
 			String category, String ccfStatus, String postYear, String volNum,
 			String issueNum, Integer startPage, Integer endPage,
 			Set userPapers, Set fieldPapers) {
 		this.extraAuthor = extraAuthor;
+		this.extraCorrAuthor = extraCorrAuthor;
 		this.title = title;
 		this.type = type;
 		this.category = category;
@@ -69,6 +71,14 @@ public class Paper implements java.io.Serializable {
 
 	public void setExtraAuthor(String extraAuthor) {
 		this.extraAuthor = extraAuthor;
+	}
+
+	public String getExtraCorrAuthor() {
+		return extraCorrAuthor;
+	}
+
+	public void setExtraCorrAuthor(String extraCorrAuthor) {
+		this.extraCorrAuthor = extraCorrAuthor;
 	}
 
 	public String getTitle() {
@@ -174,6 +184,7 @@ public class Paper implements java.io.Serializable {
 		return "Paper{" +
 				"paperId=" + paperId +
 				", extraAuthor='" + extraAuthor + '\'' +
+				", extraCorrAuthor='" + extraCorrAuthor + '\'' +
 				", title='" + title + '\'' +
 				", type='" + type + '\'' +
 				", category='" + category + '\'' +

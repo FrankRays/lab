@@ -3,6 +3,7 @@ package shu.lab.dao.impl;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import shu.lab.dao.UserDao;
+import shu.lab.entity.Field;
 import shu.lab.entity.User;
 import shu.lab.util.HibernateUtil;
 
@@ -15,37 +16,111 @@ public class UserDaoImpl implements UserDao {
     public User getUserById(Integer id) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
-        Transaction ts;
-        User u = null;
+
         try{
-            ts = session.beginTransaction();
-            User u2 = session.load(User.class,id);
-            if (u2 != null){
-                u = new User();
-                u.setUsername(u2.getUsername());
-                u.setPassword(u2.getPassword());
-                u.setPhotoUrl(u2.getPhotoUrl());
-                u.setUserId(u2.getUserId());
-                u.setUserType(u2.getUserType());
-            }
+            return session.load(User.class,id);
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<User> getUserList(Integer page, Integer num) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+
+            return session.createQuery("from User")
+                    .setFirstResult((page-1)*num).setMaxResults(num).list();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<User> getAllUser() {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+
+            return session.createQuery("from User").list();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public boolean addUser(User user) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        boolean status = false;
+        try {
+            Transaction ts = session.beginTransaction();
+            ts.begin();
+            session.save(user);
+            status = true;
             ts.commit();
         } catch (Exception e){
             e.printStackTrace();
         } finally {
             session.close();
         }
-        return u;
-    }
 
-    public List<User> getUserList(Integer page, Integer num) {
-        return null;
-    }
-
-    public boolean addUser(User user) {
-        return false;
+        return status;
     }
 
     public void delUser(Integer uid) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            Transaction ts = session.beginTransaction();
+            ts.begin();
+            User u = session.load(User.class, uid);
+            session.delete(u);
+            ts.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
 
+    public void addUserField(Integer fid, Integer uid) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            Transaction ts = session.beginTransaction();
+            ts.begin();
+            User u = session.load(User.class, uid);
+            Field f = session.load(Field.class, fid);
+            u.getFieldUsers().add(f);
+            ts.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void delUserField(Integer fid, Integer uid) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            Transaction ts = session.beginTransaction();
+            ts.begin();
+            User u = session.load(User.class, uid);
+            Field f = session.load(Field.class, fid);
+            u.getFieldUsers().remove(f);
+            ts.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
 }

@@ -17,7 +17,7 @@
             <column name="paper_id" />
         </many-to-one>
         <property name="order" type="java.lang.Integer">
-            <column name="order" />
+            <column name="up_order" />
         </property>
         <property name="isCorr" type="java.lang.Integer">
             <column name="is_corr" />

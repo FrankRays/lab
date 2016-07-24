@@ -1,7 +1,12 @@
 package shu.lab.dao.impl;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import shu.lab.dao.ProDao;
+import shu.lab.entity.Field;
+import shu.lab.entity.Paper;
 import shu.lab.entity.Project;
+import shu.lab.util.HibernateUtil;
 
 import java.security.Timestamp;
 import java.util.List;
@@ -26,11 +31,47 @@ public class ProDaoImpl implements ProDao {
         return null;
     }
 
-    public boolean addProject(String proName, List<Integer> directors, String extraDirectors, Timestamp startDate, Timestamp endDate, String proFee, String proType, String proLevel) {
+    public boolean addProject(String proName, List<Integer> directors, String extraDirectors,
+                              Timestamp startDate, Timestamp endDate, String proFee,
+                              String proType, String proLevel) {
         return false;
     }
 
     public void delProject(Integer projectId) {
 
+    }
+
+    public void addProField(Integer fid, Integer pid) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            Transaction ts = session.beginTransaction();
+            ts.begin();
+            Project p = session.load(Project.class, pid);
+            Field f = session.load(Field.class, fid);
+            p.getFieldProjects().add(f);
+            ts.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void delProField(Integer fid, Integer pid) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            Transaction ts = session.beginTransaction();
+            ts.begin();
+            Project p = session.load(Project.class, pid);
+            Field f = session.load(Field.class, fid);
+            p.getFieldProjects().remove(f);
+            ts.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
 }

@@ -17,4 +17,6 @@ public interface ProDao {
                        Timestamp startDate, Timestamp endDate, String proFee,
                        String proType, String proLevel);
     void delProject(Integer projectId);
+    void addProField(Integer fid, Integer pid);
+    void delProField(Integer fid, Integer pid);
 }
