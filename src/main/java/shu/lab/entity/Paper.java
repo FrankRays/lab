@@ -24,6 +24,7 @@ public class Paper implements java.io.Serializable {
 	private String issueNum;
 	private Integer startPage;
 	private Integer endPage;
+	private String sourceUrl;
 	private Set userPapers = new HashSet(0);
 	private Set fieldPapers = new HashSet(0);
 
@@ -142,6 +143,14 @@ public class Paper implements java.io.Serializable {
 		this.endPage = endPage;
 	}
 
+	public String getSourceUrl() {
+		return sourceUrl;
+	}
+
+	public void setSourceUrl(String sourceUrl) {
+		this.sourceUrl = sourceUrl;
+	}
+
 	@JSON(serialize = false)
 	public Set getUserPapers() {
 		return this.userPapers;
@@ -174,6 +183,7 @@ public class Paper implements java.io.Serializable {
 				", issueNum='" + issueNum + '\'' +
 				", startPage=" + startPage +
 				", endPage=" + endPage +
+				", sourceUrl='" + sourceUrl + '\'' +
 				'}';
 	}
 }

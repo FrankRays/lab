@@ -40,6 +40,9 @@
         <property name="endPage" type="java.lang.Integer">
             <column name="end_page" />
         </property>
+        <property name="sourceUrl" type="java.lang.String">
+            <column name="source_url" />
+        </property>
         <set name="userPapers" inverse="true">
             <key>
                 <column name="paper_id" />
