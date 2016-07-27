@@ -4,8 +4,8 @@
     <data-source name="MySQL - lab@114.215.153.154" uuid="fc712afd-5807-45fb-88fc-386496624a28">
       <secret-storage>master_key</secret-storage>
       <user-name>root</user-name>
-      <schema-pattern>lab.*</schema-pattern>
-      <default-schemas>lab.*</default-schemas>
+      <introspection-scope>lab:*</introspection-scope>
+      <resolve-scope>lab:*</resolve-scope>
     </data-source>
   </component>
 </project>
