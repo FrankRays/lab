@@ -1,5 +1,6 @@
 package shu.lab.dao.impl;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import shu.lab.dao.UserPaperDao;
@@ -42,7 +43,12 @@ public class UserPaperDaoImpl implements UserPaperDao {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         try {
+
+            Query q = session.createSQLQuery("UPDATE user_paper SET up_order = up_order-1 WHERE up_order > (SELECT up_order FROM user_paper WHERE user_id=?)");
+            q.setParameter(1,uid);
+            q.executeUpdate();
             session.createQuery("delete from UserPaper up where up.user.userId="+uid+" and up.paper.paperId="+pid).executeUpdate();
+
         } catch (Exception e){
             e.printStackTrace();
         } finally {

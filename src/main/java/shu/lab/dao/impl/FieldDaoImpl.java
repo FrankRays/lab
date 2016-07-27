@@ -13,15 +13,17 @@ public class FieldDaoImpl implements FieldDao {
     public void addField(String descr) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
+        Transaction ts = session.beginTransaction();
         try {
             Field f = new Field();
             f.setFieldDescr(descr);
             f.setCount(0);
-            Transaction ts = session.beginTransaction();
+
             ts.begin();
             session.save(f);
             ts.commit();
         } catch (Exception e){
+            ts.rollback();
             e.printStackTrace();
         } finally {
             session.close();
@@ -31,13 +33,14 @@ public class FieldDaoImpl implements FieldDao {
     public void delField(Integer fid) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
+        Transaction ts = session.beginTransaction();
         try {
-            Transaction ts = session.beginTransaction();
             ts.begin();
             Field f = session.load(Field.class, fid);
             session.delete(f);
             ts.commit();
         } catch (Exception e){
+            ts.rollback();
             e.printStackTrace();
         } finally {
             session.close();

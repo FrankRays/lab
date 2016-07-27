@@ -1,7 +1,6 @@
 import junit.framework.TestCase;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import shu.lab.dao.impl.FieldDaoImpl;
 import shu.lab.dao.impl.PaperDaoImpl;
 import shu.lab.entity.User;
 import shu.lab.util.HibernateUtil;
@@ -44,9 +43,6 @@ public class Test extends TestCase {
     }
     public void testCase2(){
 
-        HibernateUtil util = new HibernateUtil();
-        Session session = util.openSession();
-        try {
             //new FieldDaoImpl().addField("计算与建模");
             //new FieldDaoImpl().delField(7);
             List<Integer> authors = new ArrayList<Integer>();
@@ -58,11 +54,12 @@ public class Test extends TestCase {
             corrAuthors.add(4);
             //new PaperDaoImpl().addPaper(authors, corrAuthors, "liuxiang", "make", "关于神经网络的深度学习", "aaa", "A", "2016", "第5卷", "第8期", 25, 76,"locat");
 
-        }catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
+    }
+    public void test3(){
+
+        //System.out.println(new PaperDaoImpl().getAllPaperByUserId(1));
+        //new PaperDaoImpl().addPaperField(2, 1);
+        new PaperDaoImpl().delPaper(1);
 
     }
 }
