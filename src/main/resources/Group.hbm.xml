@@ -13,6 +13,9 @@
         <property name="groupName" type="java.lang.String">
             <column name="group_name" />
         </property>
+        <property name="leader" type="java.lang.Integer">
+            <column name="leader" />
+        </property>
         <set name="groupAuths" inverse="true">
             <key>
                 <column name="group_id" />

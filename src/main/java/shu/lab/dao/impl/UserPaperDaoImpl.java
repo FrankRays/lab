@@ -19,9 +19,6 @@ public class UserPaperDaoImpl implements UserPaperDao {
         try {
             UserPaper up = new UserPaper();
 
-            Transaction ts = session.beginTransaction();
-            ts.begin();
-
             User u = session.load(User.class, uid);
             Paper p = session.load(Paper.class, pid);
             up.setUser(u);
@@ -31,11 +28,10 @@ public class UserPaperDaoImpl implements UserPaperDao {
             session.save(up);
             //session.createSQLQuery("INSERT INTO user_paper (user_id,paper_id,) ").executeUpdate();
 
-            ts.commit();
         } catch (Exception e){
             e.printStackTrace();
         } finally {
-            session.close();
+            //session.close();
         }
     }
 

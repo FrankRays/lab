@@ -1,5 +1,6 @@
 package shu.lab.dao.impl;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import shu.lab.dao.UserDao;
@@ -19,6 +20,21 @@ public class UserDaoImpl implements UserDao {
 
         try{
             return session.load(User.class,id);
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public User getUserByName(String name) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+
+        try{
+            Query q = session.createQuery("from User where username=?");
+            q.setParameter(0, name);
+            return (User) q.list().get(0);
 
         } catch (Exception e){
             e.printStackTrace();

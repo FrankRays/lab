@@ -4,7 +4,9 @@ import org.hibernate.Transaction;
 import shu.lab.dao.impl.PaperDaoImpl;
 import shu.lab.entity.User;
 import shu.lab.util.HibernateUtil;
+import shu.lab.util.StaticParam;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +61,19 @@ public class Test extends TestCase {
 
         //System.out.println(new PaperDaoImpl().getAllPaperByUserId(1));
         //new PaperDaoImpl().addPaperField(2, 1);
-        new PaperDaoImpl().delPaper(1);
+        //new PaperDaoImpl().addDelExtraMember(2,"sss", StaticParam.ADD, 1);
+        new PaperDaoImpl().addDelExtraMember(2,"make", StaticParam.DELETE, 1);
 
+    }
+    public void test4(){
+        /*
+        String s = "mark,ttt";
+        System.out.println(s.indexOf("ttt"));
+
+        System.out.println(s.substring(0,s.indexOf("ttt")-1));*/
+        String s = "2016-11-12";
+        String e = "2016-12-13";
+        Timestamp ts = Timestamp.valueOf(s+" 00:00:00.00");
+        System.out.println("ts.toString() = " + ts.toString());
     }
 }

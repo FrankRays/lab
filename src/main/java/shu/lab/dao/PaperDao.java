@@ -10,14 +10,13 @@ import java.util.List;
 public interface PaperDao {
     List<Paper> getLatestTenPaper();
     List<Paper> getFamousTenPaper();
+    Paper getPaperById(Integer pid);
     List<Paper> getPaperByUserId(Integer uid, Integer page, Integer num);
     List<Paper> getAllPaperByUserId(Integer uid);
-    boolean addPaper(List<Integer> authors,List<Integer> corrAuthors, String extraAuthor,
-                     String extraCorrAuthor, String title, String category, String CCFStatus,
-                     String postYear, String volNum, String issueNum, Integer startPage,
-                     Integer endPage, String url);
+    boolean addPaper(Paper paper, Integer[] authors,Integer[] corrAuthors);
     void delPaper(Integer paperId);
-    void addPaperField(Integer pid, Integer fid);
-    void delPaperField(Integer pid, Integer fid);
-
+    Integer addDelPaperField(Integer pid, Integer fid, Integer type);
+    Integer addDelPaperMember(Integer pid, Integer uid, Integer type, Integer isCorr);
+    Integer addDelExtraMember(Integer pid, String extraAuthor, Integer type, Integer isCorr);
+    Integer addDelFieldPaper(Integer fid, Integer pid, Integer type);
 }

@@ -13,9 +13,7 @@ public interface ProDao {
     List<Project> getFamousTenProject();
     List<Project> getProjectByUserId(Integer uid, Integer page, Integer num);
     List<Project> getAllProjectByUserId(Integer uid);
-    boolean addProject(String proName, List<Integer> directors, String extraDirectors,
-                       Timestamp startDate, Timestamp endDate, String proFee,
-                       String proType, String proLevel);
+    boolean addProject(Project pro);
     void delProject(Integer projectId);
     void addProField(Integer fid, Integer pid);
     void delProField(Integer fid, Integer pid);

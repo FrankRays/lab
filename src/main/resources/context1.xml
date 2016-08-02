@@ -6,4 +6,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd" xmlns:tx="http://www.springframework.org/schema/tx">
 	<bean id="test" class="shu.lab.action.TestAction" />
 	<bean id="ajax" class="shu.lab.action.AjaxAction" />
+	<bean id="view" class="shu.lab.action.viewLoadAction" />
+	<bean id="login" class="shu.lab.action.loginAction"/>
+	<bean id="paper" class="shu.lab.action.paperAction"/>
+	<bean id="paperUpload" class="shu.lab.action.PaperUploadAction"/>
+	<bean id="pro" class="shu.lab.action.ProAction"/>
 </beans>

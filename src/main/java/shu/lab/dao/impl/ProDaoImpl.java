@@ -31,9 +31,21 @@ public class ProDaoImpl implements ProDao {
         return null;
     }
 
-    public boolean addProject(String proName, List<Integer> directors, String extraDirectors,
-                              Timestamp startDate, Timestamp endDate, String proFee,
-                              String proType, String proLevel) {
+    public boolean addProject(Project pro) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        Transaction ts = session.beginTransaction();
+        try {
+            ts.begin();
+            session.save(pro);
+            ts.commit();
+            return true;
+        } catch (Exception e){
+            ts.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
         return false;
     }
 

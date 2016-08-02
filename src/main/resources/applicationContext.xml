@@ -8,4 +8,5 @@
 	<import resource="context2.xml"/>
 	<import resource="context3.xml"/>
 	<!-- <bean id="test" class="shu.lab.action.TestAction"></bean> -->
+
 </beans>

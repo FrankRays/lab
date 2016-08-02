@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface UserDao {
     User getUserById(Integer id);
+    User getUserByName(String name);
     List<User> getUserList(Integer page, Integer num);
     List<User> getAllUser();
     boolean addUser(User user);

@@ -11,6 +11,7 @@ import java.util.List;
 public interface GroupDao {
     void addGroup(Group g);
     void delGroup(Integer gid);
-    void changeGroupName(String name);
+    void changeGroupName(Integer gid, String name);
+    boolean changeLeader(Integer gid, Integer lid);
     List<Group> getAllGroup();
 }

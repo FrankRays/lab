@@ -15,6 +15,7 @@ public class Group implements java.io.Serializable {
 
 	private Integer groupId;
 	private String groupName;
+	private Integer leader;
 	private Set groupAuths = new HashSet(0);
 
 	// Constructors
@@ -24,8 +25,9 @@ public class Group implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Group(String groupName, Set groupAuths) {
+	public Group(String groupName, Integer leader, Set groupAuths) {
 		this.groupName = groupName;
+		this.leader = leader;
 		this.groupAuths = groupAuths;
 	}
 
@@ -47,6 +49,14 @@ public class Group implements java.io.Serializable {
 		this.groupName = groupName;
 	}
 
+	public Integer getLeader() {
+		return leader;
+	}
+
+	public void setLeader(Integer leader) {
+		this.leader = leader;
+	}
+
 	@JSON(serialize = false)
 	public Set getGroupAuths() {
 		return this.groupAuths;
@@ -61,6 +71,7 @@ public class Group implements java.io.Serializable {
 		return "Group{" +
 				"groupId=" + groupId +
 				", groupName='" + groupName + '\'' +
+				", leader=" + leader +
 				'}';
 	}
 }
