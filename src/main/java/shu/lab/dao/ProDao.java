@@ -15,6 +15,5 @@ public interface ProDao {
     List<Project> getAllProjectByUserId(Integer uid);
     boolean addProject(Project pro);
     void delProject(Integer projectId);
-    void addProField(Integer fid, Integer pid);
-    void delProField(Integer fid, Integer pid);
+    Integer addDelFieldPro(Integer fid, Integer pid, Integer type);
 }

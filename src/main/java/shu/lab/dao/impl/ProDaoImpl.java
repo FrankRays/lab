@@ -7,6 +7,7 @@ import shu.lab.entity.Field;
 import shu.lab.entity.Paper;
 import shu.lab.entity.Project;
 import shu.lab.util.HibernateUtil;
+import shu.lab.util.StaticParam;
 
 import java.security.Timestamp;
 import java.util.List;
@@ -70,20 +71,25 @@ public class ProDaoImpl implements ProDao {
         }
     }
 
-    public void delProField(Integer fid, Integer pid) {
+    public Integer addDelFieldPro(Integer fid, Integer pid, Integer type) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
+        //Transaction ts = session.beginTransaction();
         try {
-            Transaction ts = session.beginTransaction();
-            ts.begin();
-            Project p = session.load(Project.class, pid);
-            Field f = session.load(Field.class, fid);
-            p.getFieldProjects().remove(f);
-            ts.commit();
+            //ts.begin();
+            if (type.equals(StaticParam.ADD)){
+                return session.createSQLQuery("INSERT INTO  field_project (field_id, project_id) VALUES ("+fid+", "+pid+")")
+                        .executeUpdate();
+            } else {
+                return session.createSQLQuery("DELETE FROM field_project WHERE field_id="+fid+" AND project_id="+pid)
+                        .executeUpdate();
+            }
         } catch (Exception e){
             e.printStackTrace();
+            //ts.rollback();
         } finally {
             session.close();
         }
+        return 0;
     }
 }

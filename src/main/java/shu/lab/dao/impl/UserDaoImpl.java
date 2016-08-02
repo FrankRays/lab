@@ -7,6 +7,7 @@ import shu.lab.dao.UserDao;
 import shu.lab.entity.Field;
 import shu.lab.entity.User;
 import shu.lab.util.HibernateUtil;
+import shu.lab.util.StaticParam;
 
 import java.util.List;
 
@@ -106,37 +107,24 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    public void addUserField(Integer fid, Integer uid) {
+    public Integer addDelUserField(Integer fid, Integer uid, Integer type) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
-        try {
-            Transaction ts = session.beginTransaction();
-            ts.begin();
-            User u = session.load(User.class, uid);
-            Field f = session.load(Field.class, fid);
-            u.getFieldUsers().add(f);
-            ts.commit();
-        } catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-    }
 
-    public void delUserField(Integer fid, Integer uid) {
-        HibernateUtil util = new HibernateUtil();
-        Session session = util.openSession();
         try {
-            Transaction ts = session.beginTransaction();
-            ts.begin();
-            User u = session.load(User.class, uid);
-            Field f = session.load(Field.class, fid);
-            u.getFieldUsers().remove(f);
-            ts.commit();
+
+            if (type.equals(StaticParam.ADD)){
+                return session.createSQLQuery("INSERT INTO  field_user (field_id, user_id) VALUES ("+fid+", "+uid+")")
+                        .executeUpdate();
+            } else {
+                return session.createSQLQuery("DELETE FROM field_user WHERE field_id="+fid+" AND user_id="+uid)
+                        .executeUpdate();
+            }
         } catch (Exception e){
             e.printStackTrace();
         } finally {
             session.close();
         }
+        return 0;
     }
 }
