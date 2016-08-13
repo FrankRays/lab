@@ -2,10 +2,10 @@ package shu.lab.dao.impl;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import shu.lab.dao.GroupDao;
-import shu.lab.entity.Group;
+import shu.lab.entity.Groups;
 import shu.lab.util.HibernateUtil;
+import shu.lab.util.StaticParam;
 
 import java.util.List;
 
@@ -13,50 +13,47 @@ import java.util.List;
  * Created by Jimmy on 2016/7/24.
  */
 public class GroupDaoImpl implements GroupDao {
-    public void addGroup(Group g) {
+    public boolean addGroup(String gName) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         try {
-            Transaction ts = session.beginTransaction();
-            ts.begin();
-            session.save(g);
-            ts.commit();
+            session.createSQLQuery("INSERT INTO `groups` (group_name) VALUES ('"+gName+"')").executeUpdate();
+            return true;
         } catch (Exception e){
             e.printStackTrace();
         } finally {
             session.close();
         }
+        return false;
     }
 
-    public void delGroup(Integer gid) {
+    public boolean delGroup(Integer gid) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         try {
-            Query q = session.createSQLQuery("DELETE FROM group WHERE group_id=?");
-            q.setParameter(1, gid);
-            q.executeUpdate();
+            Query q = session.createSQLQuery("DELETE FROM `groups` WHERE group_id="+gid);
+            return (q.executeUpdate() > 0);
 
         } catch (Exception e){
             e.printStackTrace();
         } finally {
             session.close();
         }
+        return false;
     }
 
-    public void changeGroupName(Integer gid, String name) {
+    public boolean changeGroupName(Integer gid, String name) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         try {
-            Query q = session.createSQLQuery("UPDATE group SET group_name=? WHERE group_id=?");
-            q.setParameter(1, name);
-            q.setParameter(2,gid);
-            q.executeUpdate();
-
+            Query q = session.createSQLQuery("UPDATE `groups` SET group_name='"+name+"' WHERE group_id="+gid);
+            return q.executeUpdate() > 0;
         } catch (Exception e){
             e.printStackTrace();
         } finally {
             session.close();
         }
+        return false;
     }
 
     public boolean changeLeader(Integer gid, Integer lid) {
@@ -64,9 +61,7 @@ public class GroupDaoImpl implements GroupDao {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         try {
-            Query q = session.createSQLQuery("UPDATE group SET leader=? WHERE group_id=?");
-            q.setParameter(1, lid);
-            q.setParameter(2,gid);
+            Query q = session.createSQLQuery("UPDATE `groups` SET leader="+lid+" WHERE group_id="+gid);
             status = q.executeUpdate();
 
         } catch (Exception e){
@@ -77,11 +72,30 @@ public class GroupDaoImpl implements GroupDao {
         return (status > 0);
     }
 
-    public List<Group> getAllGroup() {
+    public boolean addDelMember(Integer gid, Integer uid, Integer type) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         try {
-            return session.createQuery("from Group ").list();
+            if (type.equals(StaticParam.ADD)){
+                return session.createSQLQuery("INSERT INTO `group_user` (user_id, group_id) VALUES ("+gid+", "+uid+")")
+                        .executeUpdate() > 0;
+            } else if (type.equals(StaticParam.DELETE)){
+                return session.createSQLQuery("DELETE FROM `group_user` WHERE group_id="+gid+" AND user_id="+uid)
+                        .executeUpdate() > 0;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return false;
+    }
+
+    public List<Groups> getAllGroup() {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            return session.createQuery("from Groups ").list();
         } catch (Exception e){
             e.printStackTrace();
         }

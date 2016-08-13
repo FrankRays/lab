@@ -14,7 +14,10 @@
     <title>jQuery UI 排序（Sortable） - 连接列表</title>
     <link rel="stylesheet" href="css/jquery-ui.css">
     <link rel="stylesheet" href="css/jquery-ui.theme.css">
+    <%--<link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">--%>
     <script src="js/jquery.js"></script>
+    <%--<script src="js/bootstrap.js"></script>--%>
     <script src="js/jquery-ui.js"></script>
     <style>
         #sortable1, #sortable2 { list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
@@ -30,6 +33,7 @@
 </head>
 <body>
 <div class="container">
+    <div class=""></div>
     <form action="paperUpload.action" method="post" enctype="multipart/form-data">
 
         <ul id="sortable1" class="connectedSortable">

@@ -1,7 +1,8 @@
 package shu.lab.entity;
 
 /**
- * UserProject entity. @author Jimmy J
+ * UserProject entity.
+ * @author jimmy
  */
 
 public class UserProject implements java.io.Serializable {
@@ -50,12 +51,4 @@ public class UserProject implements java.io.Serializable {
 		this.user = user;
 	}
 
-	@Override
-	public String toString() {
-		return "UserProject{" +
-				"upId=" + upId +
-				", project=" + project +
-				", user=" + user +
-				'}';
-	}
 }

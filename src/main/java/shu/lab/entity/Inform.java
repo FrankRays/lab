@@ -3,7 +3,8 @@ package shu.lab.entity;
 import java.sql.Timestamp;
 
 /**
- * Inform entity. @author Jimmy J
+ * Inform entity.
+ * @author jimmy
  */
 
 public class Inform implements java.io.Serializable {
@@ -25,10 +26,11 @@ public class Inform implements java.io.Serializable {
 
 	/** full constructor */
 	public Inform(User userBySenderId, User userByReceiverId,
-			String informType, Timestamp sendDate) {
+			String informType, String content, Timestamp sendDate) {
 		this.userBySenderId = userBySenderId;
 		this.userByReceiverId = userByReceiverId;
 		this.informType = informType;
+		this.content = content;
 		this.sendDate = sendDate;
 	}
 
@@ -67,7 +69,7 @@ public class Inform implements java.io.Serializable {
 	}
 
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	public void setContent(String content) {
@@ -82,15 +84,4 @@ public class Inform implements java.io.Serializable {
 		this.sendDate = sendDate;
 	}
 
-	@Override
-	public String toString() {
-		return "Inform{" +
-				"informId=" + informId +
-				", userBySenderId=" + userBySenderId +
-				", userByReceiverId=" + userByReceiverId +
-				", informType='" + informType + '\'' +
-				", content='" + content + '\'' +
-				", sendDate=" + sendDate +
-				'}';
-	}
 }

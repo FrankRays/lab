@@ -16,4 +16,6 @@ public interface ProDao {
     boolean addProject(Project pro);
     void delProject(Integer projectId);
     Integer addDelFieldPro(Integer fid, Integer pid, Integer type);
+    Integer addDelProDirectors(Integer pid, Integer uid, Integer type);
+    Integer addDelExtraDirectors(Integer pid, String extraAuthor, Integer type);
 }

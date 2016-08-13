@@ -2,6 +2,7 @@ package shu.lab.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.util.ServletContextAware;
 import shu.lab.dao.impl.PaperDaoImpl;
@@ -12,7 +13,6 @@ import javax.servlet.ServletContext;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -22,17 +22,12 @@ import java.util.List;
 public class PaperUploadAction extends ActionSupport implements ModelDriven<Paper>, ServletContextAware {
     private Paper paper = new Paper();
     private ServletContext context;
-    private Integer[] authors;
-    private Integer[] corrAuthors;
+    private String authors;
     private File file;
     private String fileFileName;
 
-    public void setAuthors(Integer[] authors) {
+    public void setAuthors(String authors) {
         this.authors = authors;
-    }
-
-    public void setCorrAuthors(Integer[] corrAuthors) {
-        this.corrAuthors = corrAuthors;
     }
 
     public File getFile() {
@@ -51,12 +46,12 @@ public class PaperUploadAction extends ActionSupport implements ModelDriven<Pape
         this.fileFileName = fileFileName;
     }
 
-    /*acquire parameter with ModelDriven*/
+    /** acquire parameter with ModelDriven*/
     public Paper getModel() {
         return paper;
     }
 
-    /*used to get the real relative path*/
+    /** used to get the real relative path*/
     public void setServletContext(ServletContext context) {
         this.context = context;
     }
@@ -64,6 +59,7 @@ public class PaperUploadAction extends ActionSupport implements ModelDriven<Pape
     @Override
     public String execute() throws Exception {
 
+        /**get the real path*/
         String realPath = context.getRealPath(StaticParam.PAPER_FOLDER);
         System.out.println("realPath = " + realPath);
 
@@ -71,24 +67,35 @@ public class PaperUploadAction extends ActionSupport implements ModelDriven<Pape
         //String extension = position == -1 ? "":fileFileName.substring(position);
         //System.out.println("extension = " + extension);
 
+        /** add date info to the fileName */
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String dateInfo = df.format(new Date());
-        //System.out.println("dateInfo = " + dateInfo);
-
         String fileName = dateInfo + fileFileName;
-        System.out.println("fileName = " + fileName);
+        //System.out.println("fileName = " + fileName);
 
-        System.out.println("authors = " + Arrays.toString(authors));
+        //System.out.println("authors = " + Arrays.toString(authors));
         try {
-            /*copy file to server*/
-            File destFile  = new File(realPath, fileName);
-            FileUtils.copyFile(file, destFile);
 
-            /*save file path to paper*/
+            /**add file path to paper*/
             paper.setSourceUrl(fileName);
 
-            new PaperDaoImpl().addPaper(paper,authors,corrAuthors);
+            /**save paper to DB*/
+            PaperDaoImpl pdi = new PaperDaoImpl();
+            Integer pid = pdi.addPaper(paper);
 
+            /**get authors info as a list*/
+            JSONObject json = JSONObject.fromObject(authors);
+            List list = (List) json.get("list");
+
+            /** 如果插入作者出错，整个事件会回滚，同时，此处删除之前添加的paper*/
+            if ( !pdi.updPaperMember(pid, list)){
+                pdi.delPaper(pid);
+            } else {
+
+                /**copy file to server*/
+                File destFile  = new File(realPath, fileName);
+                FileUtils.copyFile(file, destFile);
+            }
         } catch (Exception e){
             e.printStackTrace();
         }

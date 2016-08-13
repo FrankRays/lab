@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Authority entity. @author Jimmy J
+ * Authority entity.
+ * @author jimmy
  */
 
 public class Authority implements java.io.Serializable {
@@ -59,8 +60,8 @@ public class Authority implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return "Authority{" +
-				"authId=" + authId +
-				", authDescr='" + authDescr + '\'' +
+				"authDescr='" + authDescr + '\'' +
+				", authId=" + authId +
 				'}';
 	}
 }

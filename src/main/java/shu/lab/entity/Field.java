@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Field entity. @author Jimmy J
+ * Field entity.
+ * @author jimmy
  */
 
 public class Field implements java.io.Serializable {

@@ -1,9 +1,10 @@
 package shu.lab.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import net.sf.json.JSONObject;
 import shu.lab.dao.impl.InformDaoImpl;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -36,6 +37,13 @@ public class AjaxAction extends ActionSupport {
     @Override
     public String execute() throws Exception {
 
+        System.out.println("AjaxAction.execute");
+        System.out.println("content = " + content);
+        JSONObject jasonObject = JSONObject.fromObject(content);
+        Map map = jasonObject;
+        List list = (List) map.get("list");
+        Map map2 = (Map) list.get(0);
+        System.out.println("str = " + map2.get("order"));
         return super.execute();
     }
 

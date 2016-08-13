@@ -1,14 +1,20 @@
 package shu.lab.dao.impl;
 
+import net.sf.json.JSONObject;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import shu.lab.dao.PaperDao;
 import shu.lab.entity.Paper;
+import shu.lab.entity.User;
 import shu.lab.util.HibernateUtil;
 import shu.lab.util.StaticParam;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jimmy on 2016/7/24.
@@ -72,7 +78,20 @@ public class PaperDaoImpl implements PaperDao {
         return null;
     }
 
-    public boolean addPaper(Paper paper, Integer[] authors,Integer[] corrAuthors) {
+    public Integer addPaper(Paper paper) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            session.save(paper);
+            return paper.getPaperId();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public boolean updPaperMember(Integer pId, List authors) {
 
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
@@ -80,48 +99,94 @@ public class PaperDaoImpl implements PaperDao {
         try{
 
             ts.begin();
+/*
 
             session.save(paper);
             Integer pid = paper.getPaperId();
-            if (authors != null){
-                for (int i = 0; i < authors.length; i++) {
-                    Query q = session.createSQLQuery("INSERT INTO user_paper (user_id, paper_id, is_corr) VALUES ("+authors[i]+", "+pid+", 0)");
+*/
+            /** delete previous authors from DB */
+            session.createSQLQuery("DELETE FROM user_paper WHERE paper_id="+pId);
+
+            /** and add it again */
+
+            for (int i = 0; i < authors.size(); i++) {
+                Map author = (Map) authors.get(i);
+                /** 标识是否是数据库外的用户，默认为0，表示是库内的 */
+                Integer isExtra = author.get("isExtra") == null ? 0:(Integer) author.get("isExtra");
+                /** 标识是否是 通讯作者， Integer 1 表示是通讯作者 */
+                Integer isCorr = (Integer) author.get("isCorr");
+                /** 作者序号 */
+                Integer order = (Integer) author.get("order");
+
+                List extraList = new ArrayList();
+                List extraCorrList = new ArrayList();
+                /** 如果是数据库中的用户*/
+                if (isExtra == 0){
+                    /** get user by name */
+                    String userName = (String) author.get("name");
+                    User u = new UserDaoImpl().getUserByName(userName.trim());
+                    /** 如果标签标识 是数据库用户，但是在哎数据库中没有查找到，同样添加到extraAuthors 中 */
+                    if (u == null){
+                        if (isCorr != 1) {
+                            extraList.add(author);
+                        } else {
+                            extraCorrList.add(author);
+                        }
+                    }else{
+                        Query q = session.createSQLQuery("INSERT INTO user_paper (user_id, paper_id, up_order, is_corr)" +
+                                " VALUES ("+u.getUserId()+", "+pId+", "+ order +", "+isCorr+")");
+
+                        q.executeUpdate();
+                    }
+                }
+                /**
+                 * 若不是数据库的用户, 将所有不是数据库内的用户重新组成一个List，
+                 * */
+                else {
+                    if (isCorr != 1){
+                        extraList.add(author);
+                    } else {
+                        extraCorrList.add(author);
+                    }
+                }
+                /** 如果有库外作者 */
+                if (extraList.size() > 0) {
+
+                    Map map = new HashMap();
+                    map.put("list", extraList);
+                    JSONObject json = JSONObject.fromObject(map);
+                    /** toJSONString 之后以字符形式存入数据库 */
+                    Query q = session.createQuery("update Paper p set p.extraAuthor = ?");
+                    q.setParameter(0, json.toString());
                     q.executeUpdate();
                 }
-            }
+                /** 如果有库外通讯作者 */
+                if (extraCorrList.size() > 0) {
 
-            if (corrAuthors != null){
-                for (int i = 0; i < corrAuthors.length; i++) {
-                    Query q = session.createSQLQuery("INSERT INTO user_paper (user_id, paper_id, is_corr) VALUES ("+corrAuthors[i]+", "+pid+", 1)");
+                    Map map = new HashMap();
+                    map.put("list", extraCorrList);
+                    JSONObject json = JSONObject.fromObject(map);
+                    /** toJSONString 之后以字符形式存入数据库 */
+                    Query q = session.createQuery("update Paper p set p.extraCorrAuthor = ?");
+                    q.setParameter(0, json.toString());
                     q.executeUpdate();
                 }
-            }
-
-            /*UserPaperDaoImpl upi = new UserPaperDaoImpl();
-
-            Integer order = 0;
-            for (Integer author:authors ) {
-                order++;
-                upi.addUserPaper(author,pid, order,0);
 
             }
-            order = 0;
-            for (Integer corrAuthor:corrAuthors ) {
-                order++;
-                upi.addUserPaper(corrAuthor,pid, order,1);
-            }*/
+
             ts.commit();
+            return true;
+
         } catch (Exception e){
             /**
-             * if insert authors or corrAuthors throws error,
-             * delete the information that inserted before
+             * if insert authors throws error,
+             * rollback all effort that have been done before
              **/
             ts.rollback();
             e.printStackTrace();
         } finally {
             session.close();
         }
-
         return false;
     }
 
@@ -153,7 +218,7 @@ public class PaperDaoImpl implements PaperDao {
             session.save(p);
             ts.commit();*/
             //session.createSQLQuery("INSERT INTO field_paper (field_id, paper_id) VALUES ("+fid+","+pid+")").executeUpdate();
-            if (type == 1){
+            if (type == StaticParam.ADD){
 
                 return session.createSQLQuery("INSERT INTO field_paper (field_id, paper_id) VALUES ("+fid+", "+pid+")")
                         .executeUpdate();
@@ -176,11 +241,28 @@ public class PaperDaoImpl implements PaperDao {
         try {
 
             if (type.equals(StaticParam.ADD)){
-                Query q = session.createSQLQuery("INSERT INTO user_paper (paper_id, user_id, is_corr) VALUES ("+pid+", "+uid+", "+isCorr+")");
+                /*
+                BigInteger currIndex = (BigInteger) session.createSQLQuery
+                        ("SELECT count(*) AS currIndex FROM user_paper WHERE paper_id=? AND user_id=? AND is_corr=?")
+                        .uniqueResult();
+                Query q = session.createSQLQuery("INSERT INTO user_paper (paper_id, user_id, up_order, is_corr)" +
+                        " VALUES ("+pid+", "+uid+", "+currIndex.intValue()+", "+isCorr+")");
                 return q.executeUpdate();
+                */
 
             } else if (type.equals(StaticParam.DELETE)){
-                Query q = session.createSQLQuery("DELETE FROM user_paper WHERE paper_id="+pid+" AND user_id="+uid);
+
+                /*find the order of the user in this paper that going to de delete*/
+                Integer ord = (Integer) session.createSQLQuery("SELECT up_order FROM user_paper " +
+                        "WHERE paper_id="+pid+" AND user_id="+uid+" AND is_corr="+isCorr).uniqueResult();
+
+                /*then promote the other's order which behind it */
+                session.createSQLQuery("UPDATE user_paper SET up_order = up_order-1 WHERE up_order > " + ord)
+                        .executeUpdate();
+                
+                /*delete it from user_paper*/
+                Query q = session.createSQLQuery("DELETE FROM user_paper " +
+                        "WHERE paper_id="+pid+" AND user_id="+uid+" AND is_corr="+isCorr);
                 return q.executeUpdate();
             }
             /*Query q = session.createQuery(sql);
@@ -274,7 +356,7 @@ public class PaperDaoImpl implements PaperDao {
         Session session = util.openSession();
         try {
             if (type.equals(StaticParam.ADD)){
-                return session.createSQLQuery("INSERT INTO  field_paper (field_id, paper_id) VALUES ("+fid+", "+pid+")")
+                return session.createSQLQuery("INSERT INTO field_paper (field_id, paper_id) VALUES ("+fid+", "+pid+")")
                         .executeUpdate();
             } else {
                 return session.createSQLQuery("DELETE FROM field_paper WHERE field_id="+fid+" AND paper_id="+pid)

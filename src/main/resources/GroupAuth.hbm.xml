@@ -10,7 +10,7 @@
             <column name="group_auth_id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="group" class="shu.lab.entity.Group" fetch="select">
+        <many-to-one name="groups" class="shu.lab.entity.Groups" fetch="select">
             <column name="group_id" />
         </many-to-one>
         <many-to-one name="authority" class="shu.lab.entity.Authority" fetch="select">

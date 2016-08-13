@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * User entity. @author Jimmy J
+ * User entity.
+ * @author jimmy
  */
 
 public class User implements java.io.Serializable {
@@ -20,11 +21,11 @@ public class User implements java.io.Serializable {
 	private String photoUrl;
 	private String userType;
 	private String userIntro;
-	private Integer groupId;
 	private Set userProjects = new HashSet(0);
 	private Set informsForSenderId = new HashSet(0);
 	private Set userPapers = new HashSet(0);
 	private Set informsForReceiverId = new HashSet(0);
+	private Set groupUsers = new HashSet(0);
 	private Set fieldUsers = new HashSet(0);
 
 	// Constructors
@@ -36,19 +37,19 @@ public class User implements java.io.Serializable {
 	/** full constructor */
 	public User(String username, String engName, String password,
 			String photoUrl, String userType, String userIntro,
-			Integer groupId, Set userProjects, Set informsForSenderId,
-			Set userPapers, Set informsForReceiverId, Set fieldUsers) {
+			Set userProjects, Set informsForSenderId, Set userPapers,
+			Set informsForReceiverId, Set groupUsers, Set fieldUsers) {
 		this.username = username;
 		this.engName = engName;
 		this.password = password;
 		this.photoUrl = photoUrl;
 		this.userType = userType;
 		this.userIntro = userIntro;
-		this.groupId = groupId;
 		this.userProjects = userProjects;
 		this.informsForSenderId = informsForSenderId;
 		this.userPapers = userPapers;
 		this.informsForReceiverId = informsForReceiverId;
+		this.groupUsers = groupUsers;
 		this.fieldUsers = fieldUsers;
 	}
 
@@ -110,15 +111,7 @@ public class User implements java.io.Serializable {
 		this.userIntro = userIntro;
 	}
 
-	public Integer getGroupId() {
-		return this.groupId;
-	}
-
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
-	}
-
-	@JSON(serialize = false) //返回Json字符串的时候，略去这个属性
+	@JSON(serialize = false)
 	public Set getUserProjects() {
 		return this.userProjects;
 	}
@@ -155,6 +148,15 @@ public class User implements java.io.Serializable {
 	}
 
 	@JSON(serialize = false)
+	public Set getGroupUsers() {
+		return this.groupUsers;
+	}
+
+	public void setGroupUsers(Set groupUsers) {
+		this.groupUsers = groupUsers;
+	}
+
+	@JSON(serialize = false)
 	public Set getFieldUsers() {
 		return this.fieldUsers;
 	}
@@ -173,7 +175,6 @@ public class User implements java.io.Serializable {
 				", photoUrl='" + photoUrl + '\'' +
 				", userType='" + userType + '\'' +
 				", userIntro='" + userIntro + '\'' +
-				", groupId=" + groupId +
 				'}';
 	}
 }

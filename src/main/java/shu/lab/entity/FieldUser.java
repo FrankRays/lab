@@ -1,7 +1,8 @@
 package shu.lab.entity;
 
 /**
- * FieldUser entity. @author Jimmy J
+ * FieldUser entity.
+ * @author jimmy
  */
 
 public class FieldUser implements java.io.Serializable {
@@ -50,12 +51,4 @@ public class FieldUser implements java.io.Serializable {
 		this.field = field;
 	}
 
-	@Override
-	public String toString() {
-		return "FieldUser{" +
-				"fuId=" + fuId +
-				", user=" + user +
-				", field=" + field +
-				'}';
-	}
 }

@@ -1,7 +1,8 @@
 package shu.lab.entity;
 
 /**
- * UserPaper entity. @author Jimmy J
+ * UserPaper entity.
+ * @author jimmy
  */
 
 public class UserPaper implements java.io.Serializable {
@@ -11,7 +12,7 @@ public class UserPaper implements java.io.Serializable {
 	private Integer upId;
 	private User user;
 	private Paper paper;
-	private Integer order;
+	private Integer upOrder;
 	private Integer isCorr;
 
 	// Constructors
@@ -21,9 +22,10 @@ public class UserPaper implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public UserPaper(User user, Paper paper, Integer isCorr) {
+	public UserPaper(User user, Paper paper, Integer upOrder, Integer isCorr) {
 		this.user = user;
 		this.paper = paper;
+		this.upOrder = upOrder;
 		this.isCorr = isCorr;
 	}
 
@@ -53,12 +55,12 @@ public class UserPaper implements java.io.Serializable {
 		this.paper = paper;
 	}
 
-	public Integer getOrder() {
-		return order;
+	public Integer getUpOrder() {
+		return this.upOrder;
 	}
 
-	public void setOrder(Integer order) {
-		this.order = order;
+	public void setUpOrder(Integer upOrder) {
+		this.upOrder = upOrder;
 	}
 
 	public Integer getIsCorr() {
@@ -69,14 +71,4 @@ public class UserPaper implements java.io.Serializable {
 		this.isCorr = isCorr;
 	}
 
-	@Override
-	public String toString() {
-		return "UserPaper{" +
-				"upId=" + upId +
-				", user=" + user +
-				", paper=" + paper +
-				", order=" + order +
-				", isCorr=" + isCorr +
-				'}';
-	}
 }

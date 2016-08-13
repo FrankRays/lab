@@ -1,7 +1,8 @@
 package shu.lab.entity;
 
 /**
- * GroupAuth entity. @author Jimmy J
+ * GroupAuth entity.
+ * @author jimmy
  */
 
 public class GroupAuth implements java.io.Serializable {
@@ -9,7 +10,7 @@ public class GroupAuth implements java.io.Serializable {
 	// Fields
 
 	private Integer groupAuthId;
-	private Group group;
+	private Groups groups;
 	private Authority authority;
 
 	// Constructors
@@ -19,8 +20,8 @@ public class GroupAuth implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public GroupAuth(Group group, Authority authority) {
-		this.group = group;
+	public GroupAuth(Groups groups, Authority authority) {
+		this.groups = groups;
 		this.authority = authority;
 	}
 
@@ -34,12 +35,12 @@ public class GroupAuth implements java.io.Serializable {
 		this.groupAuthId = groupAuthId;
 	}
 
-	public Group getGroup() {
-		return this.group;
+	public Groups getGroups() {
+		return this.groups;
 	}
 
-	public void setGroup(Group group) {
-		this.group = group;
+	public void setGroups(Groups groups) {
+		this.groups = groups;
 	}
 
 	public Authority getAuthority() {
@@ -50,12 +51,4 @@ public class GroupAuth implements java.io.Serializable {
 		this.authority = authority;
 	}
 
-	@Override
-	public String toString() {
-		return "GroupAuth{" +
-				"groupAuthId=" + groupAuthId +
-				", group=" + group +
-				", authority=" + authority +
-				'}';
-	}
 }

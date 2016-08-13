@@ -6,7 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Paper entity. @author Jimmy J
+ * Paper entity.
+ * @author jimmy
  */
 
 public class Paper implements java.io.Serializable {
@@ -36,10 +37,10 @@ public class Paper implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Paper(String extraAuthor,String extraCorrAuthor, String title, String type,
-			String category, String ccfStatus, String postYear, String volNum,
-			String issueNum, Integer startPage, Integer endPage,
-			Set userPapers, Set fieldPapers) {
+	public Paper(String extraAuthor, String extraCorrAuthor, String title,
+			String type, String category, String ccfStatus, String postYear,
+			String volNum, String issueNum, Integer startPage, Integer endPage,
+			String sourceUrl, Set userPapers, Set fieldPapers) {
 		this.extraAuthor = extraAuthor;
 		this.extraCorrAuthor = extraCorrAuthor;
 		this.title = title;
@@ -51,6 +52,7 @@ public class Paper implements java.io.Serializable {
 		this.issueNum = issueNum;
 		this.startPage = startPage;
 		this.endPage = endPage;
+		this.sourceUrl = sourceUrl;
 		this.userPapers = userPapers;
 		this.fieldPapers = fieldPapers;
 	}
@@ -74,7 +76,7 @@ public class Paper implements java.io.Serializable {
 	}
 
 	public String getExtraCorrAuthor() {
-		return extraCorrAuthor;
+		return this.extraCorrAuthor;
 	}
 
 	public void setExtraCorrAuthor(String extraCorrAuthor) {
@@ -154,7 +156,7 @@ public class Paper implements java.io.Serializable {
 	}
 
 	public String getSourceUrl() {
-		return sourceUrl;
+		return this.sourceUrl;
 	}
 
 	public void setSourceUrl(String sourceUrl) {

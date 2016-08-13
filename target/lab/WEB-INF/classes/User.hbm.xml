@@ -28,9 +28,6 @@
         <property name="userIntro" type="java.lang.String">
             <column name="user_intro" />
         </property>
-        <property name="groupId" type="java.lang.Integer">
-            <column name="group_id" />
-        </property>
         <set name="userProjects" inverse="true">
             <key>
                 <column name="user_id" />
@@ -54,6 +51,12 @@
                 <column name="receiver_id" />
             </key>
             <one-to-many class="shu.lab.entity.Inform" />
+        </set>
+        <set name="groupUsers" inverse="true">
+            <key>
+                <column name="user_id" />
+            </key>
+            <one-to-many class="shu.lab.entity.GroupUser" />
         </set>
         <set name="fieldUsers" inverse="true">
             <key>

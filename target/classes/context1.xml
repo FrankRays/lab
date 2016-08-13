@@ -11,4 +11,6 @@
 	<bean id="paper" class="shu.lab.action.paperAction"/>
 	<bean id="paperUpload" class="shu.lab.action.PaperUploadAction"/>
 	<bean id="pro" class="shu.lab.action.ProAction"/>
+	<bean id="auth" class="shu.lab.action.AuthAction" />
+	<bean id="group" class="shu.lab.action.GroupAction" />
 </beans>

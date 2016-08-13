@@ -23,7 +23,7 @@ public class UserPaperDaoImpl implements UserPaperDao {
             Paper p = session.load(Paper.class, pid);
             up.setUser(u);
             up.setPaper(p);
-            up.setOrder(order);
+            up.setUpOrder(order);
             up.setIsCorr(isCorr);
             session.save(up);
             //session.createSQLQuery("INSERT INTO user_paper (user_id,paper_id,) ").executeUpdate();

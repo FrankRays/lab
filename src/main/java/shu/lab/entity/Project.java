@@ -7,7 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Project entity. @author Jimmy J
+ * Project entity.
+ * @author jimmy
  */
 
 public class Project implements java.io.Serializable {

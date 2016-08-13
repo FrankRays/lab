@@ -35,5 +35,12 @@
 			<interceptor-ref name="defaultStack"/>-->
 			<result name="success" type="json"/>
 		</action>
+		<action name="auth_*" class="auth" method="{1}">
+			<result name="success" type="json"/>
+		</action>
+
+		<action name="group_*" class="group" method="{1}">
+			<result name="success" type="json" />
+		</action>
 	</package>
 </struts>

@@ -4,7 +4,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import shu.lab.dao.UserDao;
-import shu.lab.entity.Field;
 import shu.lab.entity.User;
 import shu.lab.util.HibernateUtil;
 import shu.lab.util.StaticParam;

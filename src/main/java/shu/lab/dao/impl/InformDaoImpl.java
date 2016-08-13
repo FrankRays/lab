@@ -54,12 +54,11 @@ public class InformDaoImpl implements InformDao {
         } finally {
             //session.close();
         }
-
         return null;
     }
 
     public boolean addInform(Integer senderId, Integer receiverId, String content) {
-        boolean status = false;
+
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
 
@@ -75,16 +74,16 @@ public class InformDaoImpl implements InformDao {
             inform.setSendDate(new Timestamp(System.currentTimeMillis()));
             inform.setInformType("unread");
             session.save(inform);
-            status = true;
             ts.commit();
+
+            return true;
 
         } catch (Exception e){
             e.printStackTrace();
         } finally {
             session.close();
         }
-
-        return status;
+        return false;
     }
 
     public void modifyStatus(Integer informId, String status) {
