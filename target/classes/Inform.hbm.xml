@@ -19,8 +19,8 @@
         <property name="informType" type="java.lang.String">
             <column name="inform_type" />
         </property>
-        <property name="content" type="java.lang.String">
-            <column name="content" />
+        <property name="authors" type="java.lang.String">
+            <column name="authors" />
         </property>
         <property name="sendDate" type="java.sql.Timestamp">
             <column name="send_date" length="19" />

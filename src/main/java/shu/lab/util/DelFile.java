@@ -72,9 +72,7 @@ public class DelFile {
 
         return dirFile.delete();
     }
-
-/*
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         DelFile df = new DelFile();
         System.out.println("df.delFile(\"F:\\\\eeeee\") = " + df.delFile("F:\\eeeee"));
     }*/

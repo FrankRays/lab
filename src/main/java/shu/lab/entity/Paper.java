@@ -21,6 +21,7 @@ public class Paper implements java.io.Serializable {
 	private String type;
 	private String category;
 	private String ccfStatus;
+	private String periodical;
 	private String postYear;
 	private String volNum;
 	private String issueNum;
@@ -38,7 +39,7 @@ public class Paper implements java.io.Serializable {
 
 	/** full constructor */
 	public Paper(String extraAuthor, String extraCorrAuthor, String title,
-			String type, String category, String ccfStatus, String postYear,
+			String type, String category, String ccfStatus, String periodical, String postYear,
 			String volNum, String issueNum, Integer startPage, Integer endPage,
 			String sourceUrl, Set userPapers, Set fieldPapers) {
 		this.extraAuthor = extraAuthor;
@@ -47,6 +48,7 @@ public class Paper implements java.io.Serializable {
 		this.type = type;
 		this.category = category;
 		this.ccfStatus = ccfStatus;
+		this.periodical = periodical;
 		this.postYear = postYear;
 		this.volNum = volNum;
 		this.issueNum = issueNum;
@@ -113,6 +115,14 @@ public class Paper implements java.io.Serializable {
 
 	public void setCcfStatus(String ccfStatus) {
 		this.ccfStatus = ccfStatus;
+	}
+
+	public String getPeriodical() {
+		return periodical;
+	}
+
+	public void setPeriodical(String periodical) {
+		this.periodical = periodical;
 	}
 
 	public String getPostYear() {
@@ -191,6 +201,7 @@ public class Paper implements java.io.Serializable {
 				", type='" + type + '\'' +
 				", category='" + category + '\'' +
 				", ccfStatus='" + ccfStatus + '\'' +
+				", periodical='" + periodical + '\'' +
 				", postYear='" + postYear + '\'' +
 				", volNum='" + volNum + '\'' +
 				", issueNum='" + issueNum + '\'' +

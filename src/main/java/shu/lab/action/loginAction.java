@@ -57,6 +57,9 @@ public class loginAction extends ActionSupport {
         Map session = ActionContext.getContext().getSession();
         User u = (User)session.get("user");
         this.username = u.getUsername();
+        if(u.getEngName() != null){
+            this.username += "(" + u.getEngName() + ")";
+        }
         return SUCCESS;
     }
 }

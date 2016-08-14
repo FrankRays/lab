@@ -14,6 +14,7 @@
     <script type="text/javascript" src="js/json2.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
+            /*
             var list = [];
             var cont = {};
             var conn = {};
@@ -32,19 +33,19 @@
             $("button").click(function(){
                 $.post("/lab/ajax_",
                 {
-                    content: str
+                    authors: str
                 },
                 function(data,status){
                     alert("数据: \n" + data + "\n状态: " + status);
                 });
             });
-
+*/
             var count = 1
 
             $("#add").click(function () {
                 var value = $("#inp").val()
                 console.log(value)
-                var line = "<div><input type='text' name='authors' value='"+value+"'>"+value+"<input type='button' value='删除' class='del btn btn-default'></div>"
+
                 var line2 = "<tr>"
                 line2 += "<td>"+count+"</td>" +
                         "<td><input type='text' name='authors' value='"+value+"'></td>" +
@@ -55,14 +56,10 @@
 
                 count++;
 
-                //$("#show").append(line)
+
                 $("#show2").append(line2)
                 //var authors = document.getElementsByName("authors")
                 //alert(authors[0].value)
-            })
-            $("#show").on("click", ".del", function(){
-                $(this).parent().remove();
-                count--;
             })
 
             $("#show2").on("click", ".del", function(){
@@ -89,11 +86,13 @@
                     list.push(author);
                 }
                 var sendInfo = {}
-                sendInfo.list = list
+                sendInfo.list = list;
+
+
                 var str2 = JSON.stringify(sendInfo)
                 $.post("/lab/ajax_",
                     {
-                        content:str2
+                        authors:str2
                     },
                     function(data, status){
 
@@ -102,6 +101,8 @@
             var subjects = $("#users").val();
             console.log(subjects)
             $('#inp').typeahead({source: subjects})
+
+
         });
     </script>
 
@@ -115,13 +116,6 @@
 
     <input type="text" id="inp" class="">
     <input type="button" value="添加" id="add">
-</div>
-<div class="panel panel-primary col-md-5" style="height: 300px;">
-    <div id="show">
-
-    </div>
-
-
 </div>
 
 <div class="panel panel-danger col-md-5">

@@ -19,10 +19,10 @@ import java.util.List;
 /**
  * Created by Jimmy on 2016/7/29.
  */
-public class PaperUploadAction extends ActionSupport implements ModelDriven<Paper>, ServletContextAware {
+public class PaperUploadAction extends ActionSupport implements ServletContextAware, ModelDriven<Paper> {
+    private String authors;
     private Paper paper = new Paper();
     private ServletContext context;
-    private String authors;
     private File file;
     private String fileFileName;
 
@@ -46,7 +46,6 @@ public class PaperUploadAction extends ActionSupport implements ModelDriven<Pape
         this.fileFileName = fileFileName;
     }
 
-    /** acquire parameter with ModelDriven*/
     public Paper getModel() {
         return paper;
     }
@@ -71,8 +70,10 @@ public class PaperUploadAction extends ActionSupport implements ModelDriven<Pape
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String dateInfo = df.format(new Date());
         String fileName = dateInfo + fileFileName;
-        //System.out.println("fileName = " + fileName);
+        System.out.println("fileName = " + fileName);
 
+        System.out.println("authors = " + authors);
+        System.out.println("paper = " + paper.toString());
         //System.out.println("authors = " + Arrays.toString(authors));
         try {
 
@@ -96,6 +97,10 @@ public class PaperUploadAction extends ActionSupport implements ModelDriven<Pape
                 File destFile  = new File(realPath, fileName);
                 FileUtils.copyFile(file, destFile);
             }
+
+            File destFile  = new File(realPath, fileName);
+            FileUtils.copyFile(file, destFile);
+
         } catch (Exception e){
             e.printStackTrace();
         }

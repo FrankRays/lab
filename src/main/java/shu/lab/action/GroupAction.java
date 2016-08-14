@@ -3,6 +3,7 @@ package shu.lab.action;
 import com.opensymphony.xwork2.ActionSupport;
 import shu.lab.dao.impl.AuthDaoImpl;
 import shu.lab.dao.impl.GroupDaoImpl;
+import shu.lab.util.StaticParam;
 
 /**
  * Created by Jimmy on 2016/8/4.
@@ -11,6 +12,7 @@ public class GroupAction extends ActionSupport {
     private Integer groupId;
     private Integer leaderId;
     private String groupName;
+    private Integer moduleId;
     private boolean status;
 
     public void setGroupName(String groupName) {
@@ -23,6 +25,10 @@ public class GroupAction extends ActionSupport {
 
     public void setLeaderId(Integer leaderId) {
         this.leaderId = leaderId;
+    }
+
+    public void setModuleId(Integer moduleId) {
+        this.moduleId = moduleId;
     }
 
     public boolean isStatus() {
@@ -53,12 +59,12 @@ public class GroupAction extends ActionSupport {
     }
     /** add a module permission to this group*/
     public String addPermission(){
-        //status = new AuthDaoImpl().addDelPermission(groupId, )
+        status = new AuthDaoImpl().addDelPermission(groupId, moduleId, StaticParam.ADD);
         return SUCCESS;
     }
     /** remove a module permission from this group*/
     public String rmPermission(){
-
+        status = new AuthDaoImpl().addDelPermission(groupId, moduleId, StaticParam.DELETE);
         return SUCCESS;
     }
 }

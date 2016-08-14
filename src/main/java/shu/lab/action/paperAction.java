@@ -53,10 +53,14 @@ public class paperAction extends ActionSupport implements ServletContextAware {
         return SUCCESS;
     }
     public String updPaperMenber(){
-
+/*
         JSONObject jasonObject = JSONObject.fromObject(authors);
         Map map = jasonObject;
         List list = (List) map.get("list");
+        */
+
+        JSONObject jasonObject = JSONObject.fromObject(authors);
+        List list = (List) jasonObject.get("list");
         new PaperDaoImpl().updPaperMember(paperId,list);
         return SUCCESS;
     }

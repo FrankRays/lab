@@ -28,6 +28,9 @@
         <property name="ccfStatus" type="java.lang.String">
             <column name="CCF_status" />
         </property>
+        <property name="periodical" type="java.lang.String">
+            <column name="periodical" />
+        </property>
         <property name="postYear" type="java.lang.String">
             <column name="post_year" />
         </property>

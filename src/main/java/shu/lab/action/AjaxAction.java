@@ -16,10 +16,10 @@ public class AjaxAction extends ActionSupport {
     Map<String,Object> rtnParam = new HashMap<String, Object>();
     Integer senderId;
     Integer receiverId;
-    String content;
+    String authors;
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setAuthors(String authors) {
+        this.authors = authors;
     }
 
     public void setSenderId(Integer senderId) {
@@ -38,8 +38,8 @@ public class AjaxAction extends ActionSupport {
     public String execute() throws Exception {
 
         System.out.println("AjaxAction.execute");
-        System.out.println("content = " + content);
-        JSONObject jasonObject = JSONObject.fromObject(content);
+        System.out.println("authors = " + authors);
+        JSONObject jasonObject = JSONObject.fromObject(authors);
         Map map = jasonObject;
         List list = (List) map.get("list");
         Map map2 = (Map) list.get(0);
@@ -55,7 +55,7 @@ public class AjaxAction extends ActionSupport {
     }
     public String sendInform(){
         //boolean status = new InformDaoImpl().addInform(1, 2, "you are my friend");
-        boolean status = new InformDaoImpl().addInform(senderId, receiverId, content);
+        boolean status = new InformDaoImpl().addInform(senderId, receiverId, authors);
 
         if (status){
             //information = "send successful";
