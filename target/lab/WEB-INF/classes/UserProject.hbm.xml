@@ -16,5 +16,8 @@
         <many-to-one name="user" class="shu.lab.entity.User" fetch="select">
             <column name="user_id" />
         </many-to-one>
+        <property name="upOrder" type="java.lang.String">
+            <column name="up_order" />
+        </property>
     </class>
 </hibernate-mapping>

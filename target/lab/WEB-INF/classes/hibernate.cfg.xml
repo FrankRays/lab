@@ -6,15 +6,16 @@
 <hibernate-configuration>
 
 	<session-factory>
-		<property name="hbm2ddl.auto">update</property>
+
+		<!--<property name="hbm2ddl.auto">update</property>-->
 		<property name="dialect">
 			org.hibernate.dialect.MySQLDialect
 		</property>
 		<property name="connection.url">
-			jdbc:mysql://114.215.153.154:3306/lab?useUnicode=true&amp;characterEncoding=utf8
+			jdbc:mysql://localhost:3307/lab?useUnicode=true&amp;characterEncoding=utf8
 		</property>
 		<property name="connection.username">root</property>
-		<property name="connection.password">19940125</property>
+		<property name="connection.password">usbw</property>
 		<property name="connection.driver_class">
 			com.mysql.jdbc.Driver
 		</property>
@@ -23,6 +24,14 @@
 		<property name="myeclipse.connection.profile">
 			aliyun512-lab
 		</property>
+
+		<!--<property name="hibernate.c3p0.min_size">5</property>
+		<property name="hibernate.c3p0.max_size">20</property>
+		<property name="hibernate.c3p0.timeout">300</property>
+		<property name="hibernate.c3p0.max_statements">50</property>
+		<property name="hibernate.c3p0.idle_test_period">3000</property>-->
+
+		<!--<property name="current_session_context_class">thread</property>-->
 		<mapping resource="GroupAuth.hbm.xml" />
 		<mapping resource="Inform.hbm.xml" />
 		<mapping resource="UserPaper.hbm.xml" />

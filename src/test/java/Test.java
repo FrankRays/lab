@@ -1,8 +1,12 @@
 import junit.framework.TestCase;
+import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import shu.lab.dao.impl.PaperDaoImpl;
+import shu.lab.dao.impl.*;
+import shu.lab.entity.Paper;
+import shu.lab.entity.Project;
 import shu.lab.entity.User;
 import shu.lab.util.HibernateUtil;
 import shu.lab.util.StaticParam;
@@ -18,6 +22,8 @@ import java.util.Map;
  * Created by Jimmy on 2016/7/10.
  */
 public class Test extends TestCase {
+
+    PaperDaoImpl pdi = new PaperDaoImpl();
     public void testCase(){
 
         Session session = null;
@@ -108,5 +114,60 @@ public class Test extends TestCase {
         map.put("list", list);
         JSONObject json = JSONObject.fromObject(map);
         System.out.println("json.toString() = " + json.toString());
+        JSONObject json2 = JSONObject.fromObject("{\"user\":\"jimmy\"}");
+    }
+    public void test5(){
+        
+        List list = pdi.getInnerAuthorsByPaperId(141);
+        System.out.println("list.size() = " + list.size());
+
+        List list2 = pdi.getInnerAuthorsByPaperId(141);
+        System.out.println("list2.size() = " + list2.size());
+        /*Paper paper = new PaperDaoImpl().getPaperById(142);
+        String extraAuthorsStr = paper.getExtraAuthor();
+        System.out.println("extraAuthorsStr = " + extraAuthorsStr);
+        JSONObject json = JSONObject.fromObject(extraAuthorsStr);
+        List extraAuthors = (List) json.get("list");
+        List innerAuthors = new PaperDaoImpl().getInnerAuthorsByPaperId(142);
+        List authors = new ArrayList();
+        authors.addAll(extraAuthors);
+        authors.addAll(innerAuthors);
+        System.out.println("authors.get(0) = " + authors.get(0));*/
+        
+       /* List list = new PaperDaoImpl().getInnerAuthorsByPaperId(142);
+        Map m = (Map) list.get(0);
+        System.out.println("m.get(\"order\") = " + m.get("order"));*/
+        
+        /*User u = new UserDaoImpl().getUserByName("小");
+        if (u != null){
+            System.out.println("u.toString() = " + u.toString());
+        }else {
+            System.out.println("Test.test5");
+        }*/
+
+        /*
+        Paper p = new Paper();
+        p.setTitle("hello");
+        Integer i = new PaperDaoImpl().addPaper(p);
+        System.out.println("i = " + i);*/
+        
+        /*
+        List list = new PaperDaoImpl().getAllPaperByUserId(1);
+        System.out.println("list.get(0).toString() = " + list.get(0).toString());
+
+        List list = new ProDaoImpl().getLatestTenProject();
+        System.out.println("list.get(0) = " + list.get(0));
+        */
+        
+        /*
+        List list = new FieldDaoImpl().getAllField();
+        JSONArray json = JSONArray.fromObject(list);
+        System.out.println("json.toString() = " + json.toString());*/
+        
+        /*
+        List list = new FieldDaoImpl().getFieldsById(13);
+        System.out.println(list.toString());
+        List list2 = new GroupDaoImpl().getGroupsByUserId(13);
+        System.out.println("list2.toString() = " + list2.toString());*/
     }
 }

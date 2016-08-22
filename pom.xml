@@ -8,6 +8,7 @@
   <name>lab Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <!--junit Test Tool 测试工具-->
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -67,6 +68,12 @@
       <version>2.4</version>
       <classifier>jdk15</classifier>
     </dependency>
+
+    <!--<dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-c3p0</artifactId>
+      <version>5.1.0.Final</version>
+    </dependency>-->
 
   </dependencies>
   <build>

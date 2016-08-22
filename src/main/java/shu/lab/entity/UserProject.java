@@ -12,6 +12,7 @@ public class UserProject implements java.io.Serializable {
 	private Integer upId;
 	private Project project;
 	private User user;
+	private Integer upOrder;
 
 	// Constructors
 
@@ -20,9 +21,10 @@ public class UserProject implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public UserProject(Project project, User user) {
+	public UserProject(Project project, User user, Integer upOrder) {
 		this.project = project;
 		this.user = user;
+		this.upOrder = upOrder;
 	}
 
 	// Property accessors
@@ -51,4 +53,11 @@ public class UserProject implements java.io.Serializable {
 		this.user = user;
 	}
 
+	public Integer getUpOrder() {
+		return upOrder;
+	}
+
+	public void setUpOrder(Integer upOrder) {
+		this.upOrder = upOrder;
+	}
 }

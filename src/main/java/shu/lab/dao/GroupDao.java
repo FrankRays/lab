@@ -11,10 +11,12 @@ import java.util.List;
 public interface GroupDao {
 
     /** Add a group with a string group name */
-    boolean addGroup(String gName);
+    boolean addGroup(Groups groups);
 
     /** delete a group by group id */
     boolean delGroup(Integer gid);
+
+    Groups getGroupById(Integer gid);
 
     /** change group name */
     boolean changeGroupName(Integer gid, String name);
@@ -36,4 +38,6 @@ public interface GroupDao {
 
     /** 获取数据库中所有组员信息 */
     List<Groups> getAllGroup();
+
+    List getGroupsByUserId(Integer uid);
 }

@@ -6,40 +6,45 @@
 		<result name="error">/index.jsp</result> </action> </package> -->
 
 	<package name="conf1" namespace="/" extends="struts-default">
-		<action name="test_*" class="test" method="{1}">
-			<result name="success">/test.jsp</result> 
-			<result name="error">/index.jsp</result>
-		</action>
 		<action name="view" class="view">
 			<result name="success">${page}.jsp</result>
 			<result name="error">/error.jsp</result>
 		</action>
 	</package>
+
 	<package name="ajax_conf" namespace="/" extends="json-default" >
 		<action name="ajax_*" class="ajax" method="{1}" >
 			<result name="success" type="json"/>
 		</action>
+
 		<action name="log_*" class="login" method="{1}">
 			<result name="success" type="json"/>
 		</action>
+
 		<action name="paper_*" class="paper" method="{1}">
 			<result name="success" type="json"/>
 		</action>
+
 		<action name="pro_*" class="pro" method="{1}">
 			<result name="success" type="json"/>
 		</action>
-		<action name="paperUpload" class="paperUpload">
-			<!--<interceptor-ref name="fileUpload">
-				<param name="maximumSize">102400</param>
-			</interceptor-ref>
-			<interceptor-ref name="defaultStack"/>-->
-			<result name="success" type="json"/>
-		</action>
+
 		<action name="auth_*" class="auth" method="{1}">
 			<result name="success" type="json"/>
 		</action>
 
+		<action name="user_*" class="user" method="{1}">
+			<result name="success" type="json" />
+		</action>
+
 		<action name="group_*" class="group" method="{1}">
+			<result type="json"/>
+		</action>
+
+		<action name="disp_*" class="disp" method="{1}">
+			<result name="success" type="json" />
+		</action>
+		<action name="comp_*" class="comp" method="{1}">
 			<result name="success" type="json" />
 		</action>
 	</package>

@@ -4,13 +4,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd" xmlns:tx="http://www.springframework.org/schema/tx">
-	<bean id="test" class="shu.lab.action.TestAction" />
 	<bean id="ajax" class="shu.lab.action.AjaxAction" />
-	<bean id="view" class="shu.lab.action.viewLoadAction" />
-	<bean id="login" class="shu.lab.action.loginAction"/>
-	<bean id="paper" class="shu.lab.action.paperAction"/>
-	<bean id="paperUpload" class="shu.lab.action.PaperUploadAction"/>
+	<bean id="view" class="shu.lab.action.ViewLoadAction" />
+	<bean id="login" class="shu.lab.action.LoginAction"/>
+	<bean id="paper" class="shu.lab.action.PaperAction"/>
 	<bean id="pro" class="shu.lab.action.ProAction"/>
 	<bean id="auth" class="shu.lab.action.AuthAction" />
-	<bean id="group" class="shu.lab.action.GroupAction" />
+	<bean id="group" class="shu.lab.action.UserAction" />
+	<bean id="disp" class="shu.lab.action.DisplayAction"/>
+	<bean id="comp" class="shu.lab.action.ComposedAction" />
+	<bean id="user" class="shu.lab.action.UserAction" />
 </beans>

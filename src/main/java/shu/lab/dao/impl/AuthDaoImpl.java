@@ -10,15 +10,17 @@ import shu.lab.util.StaticParam;
  * Created by Jimmy on 2016/8/4.
  */
 public class AuthDaoImpl implements AuthDao {
+
     public boolean checkPermission(Integer mid, Integer gid) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
+
         try {
             Query q = session.createSQLQuery("SELECT * FROM group_auth WHERE group_id="+gid+" AND auth_id="+mid);
             return (q.list() != null);
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return false;
@@ -31,9 +33,10 @@ public class AuthDaoImpl implements AuthDao {
             return session.createSQLQuery("INSERT INTO authority (auth_descr) VALUES ('"+moduleName+"')").executeUpdate();
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
+
         return 0;
     }
 
@@ -44,7 +47,7 @@ public class AuthDaoImpl implements AuthDao {
             return session.createSQLQuery("DELETE FROM authority WHERE auth_descr='"+moduleName+"'").executeUpdate();
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return 0;

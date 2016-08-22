@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface PaperDao {
     List<Paper> getLatestTenPaper();
+    List<Paper> getAllPaper(Integer page, Integer num);
     List<Paper> getFamousTenPaper();
     Paper getPaperById(Integer pid);
     /** get paper by user id with pagination */
@@ -25,11 +26,11 @@ public interface PaperDao {
 
     /** delete a paper record from DB */
     void delPaper(Integer paperId);
-    /**
-     * @param fid research field id
-     * @param type defined option type (StaticParam.ADD or StaticParam.DELETE)
-     * */
-    Integer addDelPaperField(Integer pid, Integer fid, Integer type);
+
+    /** modify paper fields(delete all old fields and add again) */
+    boolean modifyFields(Integer pid, List fields);
+
+    List getInnerAuthorsByPaperId(Integer pid);
     /**
      * @param type defined option type (StaticParam.ADD or StaticParam.DELETE)
      * @param isCorr 表示是否是通讯作者(0 表示 否， 1 表示 是)

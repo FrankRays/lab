@@ -11,26 +11,19 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>jQuery UI 排序（Sortable） - 连接列表</title>
-    <%--<link rel="stylesheet" href="css/jquery-ui.css">
-    <link rel="stylesheet" href="css/jquery-ui.theme.css">--%>
+    <title>发布论文登记</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.js"></script>
-    <%--<script src="js/jquery-ui.js"></script>--%>
+    <script type="text/javascript" src="js/bootstrap3-typeahead.js"></script>
 
-    <!-- 引用ajaxfileupload.js -->
-    <script src="js/ajaxfileupload.js"></script>
-    <style>
-
-    </style>
     <script>
 
         function getFileName(path){
             var pos1 = path.lastIndexOf('/');
             var pos2 = path.lastIndexOf('\\');
-            var pos  = Math.max(pos1, pos2)
+            var pos  = Math.max(pos1, pos2);
             if( pos<0 )
                 return path;
             else
@@ -41,116 +34,48 @@
             if (!$("#file1").val()){
                 alert("请选择文件")
             } else {
-
-                console.log($("#file1").val())
-                var fileName = getFileName($("#file1").val())
+                console.log($("#file1").val());
+                var fileName = getFileName($("#file1").val());
                 console.log(fileName)
             }
-        }
+        };
 
         $(function(){
-            //点击打开文件选择器
-            $("#upload").on('click', function() {
-                $('#fileToUpload').click();
-            });
-
-            //选择文件之后执行上传
-            /*$('#fileToUpload').on('change', function() {
-
-
-                var authors = document.getElementsByName("authors");
-                var isCorrs = document.getElementsByName("isCorr");
-                var isExtras = document.getElementsByName("isExtra");
-                var list = [];
-                for (var i = 0; i < authors.length; i++){
-                    var author = {}
-
-                    author.isCorr = $(isCorrs[i]).is(':checked') ? 1:0;
-                    author.isExtra = $(isExtras[i]).is(':checked') ? 1:0;
-                    author.order = i+1;
-                    author.name = authors[i].value;
-                    list.push(author);
-                }
-                var sendInfo = {}
-                sendInfo.list = list;
-
-
-                var str2 = JSON.stringify(sendInfo)
-                console.log(str2)
-
-                $.post({
-                    url:"/lab/ajax_",
-                    type:'post',
-                    //secureuri:true,
-                    fileElementId:"fileToUpload",//file标签的id
-                    dataType: "json",//返回数据的类型
-                    data:{
-                        authors:str2,
-                        title:"logan",
-                        type :"期刊论文",
-                        category:'SCI',
-                        ccfStatus:'A',
-                        postYear:'2016',
-                        periodical:'生物自然杂志',
-                        volNum:'第6卷',
-                        issueNum:'第8期',
-                        startPage:'27',
-                        endPage:'66'
-
-                    },//一同上传的数据
-                    success: function (data, status) {
-                        //把图片替换
-                        /!*var obj = jQuery.parseJSON(data);
-                        $("#upload").attr("src", "../image/"+obj.fileName);
-
-                        if(typeof(data.error) != 'undefined') {
-                            if(data.error != '') {
-                                alert(data.error);
-                            } else {
-                                alert(data.msg);
-                            }
-                        }*!/
-
-                        console.log(data + "," + status)
-
-                    },
-                    error: function (data, status, e) {
-                        alert(e);
-                    }
-                });
-            });*/
-
-
-
-            var count = 1
-
             $("#add").click(function () {
-                var value = $("#inp").val()
+                var value = $("#inp").val();
                 console.log(value)
 
                 var line2 = "<tr>"
-                line2 += "<td>"+count+"</td>" +
-                        "<td><input type='text' name='author' value='"+value+"'  readonly></td>" +
+                line2 +="<td><input type='text' name='author' value='"+value+"' readonly class='form-control'></td>" +
                         "<td><input type='checkbox' name='isCorr' value='"+value+"'></td>" +
                         "<<td><input type='checkbox' name='isExtra' value='"+value+"'></td></td>" +
-                        "<td><input type='button' value='删除' class='del btn btn-default'></td>"
-                line2 += "</tr>"
+                        "<td><input type='button' value='删除' class='del btn btn-default'></td>";
+                line2 += "</tr>";
 
-                count++;
+                $("#show2").append(line2);
+            });
 
+            $("#addField").click(function(){
+                var field = $("#inpField").val();
+                var appendLine = "<input type='text' name='fields' value='"+field+"' readonly class='form-control del'>"
+                $("#field").append(appendLine);
+            });
 
-                $("#show2").append(line2)
-                //var authors = document.getElementsByName("authors")
-                //alert(authors[0].value)
-            })
+            $("#field").on("click", ".del", function(){
+                $(this).remove();
+            });
 
             $("#show2").on("click", ".del", function(){
                 $(this).parent().parent().remove();
                 count--;
-            })
+            });
 
-
-
+            $.post("/lab/comp_field",
+                    {},
+                    function(data){
+                        $('#inpField').typeahead({source: data.list})
+                    }
+            )
         });
 
         var prePost = function(){
@@ -159,7 +84,7 @@
             var isExtras = document.getElementsByName("isExtra");
             var list = [];
             for (var i = 0; i < authors.length; i++){
-                var author = {}
+                var author = {};
 
                 author.isCorr = $(isCorrs[i]).is(':checked') ? 1:0;
                 author.isExtra = $(isExtras[i]).is(':checked') ? 1:0;
@@ -167,50 +92,88 @@
                 author.name = authors[i].value;
                 list.push(author);
             }
-            var sendInfo = {}
+            var sendInfo = {};
             sendInfo.list = list;
-            var str2 = JSON.stringify(sendInfo)
-            console.log(str2)
-            $("form").append("<input type='hidden' name='authors' value='"+str2+"'>")
-            return true;
+
+            var fieldsElem = document.getElementsByName("fields");
+            var fields = [];
+            console.log(fields);
+            for (var j = 0; j < fieldsElem.length; j++){
+                fields.push(fieldsElem[j].value);
+            }
+            sendInfo.fields = fields;
+            var str2 = JSON.stringify(sendInfo);
+            console.log(str2);
+            $("form").append("<input type='hidden' name='authors' value='"+str2+"'>");
+            //return true;
+            $("form").submit();
         }
     </script>
 </head>
 <body>
-<div class="container" style="background: #70cca8; min-height: 300px;">
-    <%--<input type="file" id="file1">
-    <input type="button" value="显示名字" onclick="getName()">--%>
-
-    <%--
-    <input id="upload" type="button" value="上传文件" class="btn btn-danger">
-    <!-- 隐藏file标签 -->
-    <input id="fileToUpload" style="display: none" type="file" name="file"><br/>
---%>
+<div class="container well" style="background: #70cca8; min-height: 300px;">
     <hr>
+    <h1 class="text-center">论文登记上传</h1>
     <hr>
-    <div class="panel">
-        <form action="/lab/paperUpload" method="post" enctype="multipart/form-data">
+    <div class="">
+        <form action="/lab/paper_addPaper" method="post" enctype="multipart/form-data">
+            <%--<label>点击选框选择上传文件</label>--%>
             <input type="file" name="file" class="form-control">
             <hr>
-            <input type="submit" value="提交论文" onclick="prePost()" class="btn btn-success">
+            <div class="col-md-6">
+                <label for="title">论文标题</label>
+                <input type="text" name="title" id="title" class="form-control"><br>
+                <label for="type">论文类型（会议论文/期刊论文）</label>
+                <input type="text" name="type" id="type" class="form-control"><br>
+                <label for="category">论文类别（SEI/EI/核心期刊/普通）</label>
+                <input type="text" name="category" id="category" class="form-control"><br>
+                <label for="ccfStatus">CCF等级（A/B/C/无【不填写】）</label>
+                <input type="text" name="ccfStatus" id="ccfStatus" class="form-control"><br>
+                <label for="postYear">发表年份</label>
+                <input type="text" name="postYear" id="postYear" class="form-control"><br>
+            </div>
+            <div class="col-md-6">
+                <label for="periodical">期刊或会议名称</label>
+                <input type="text" name="periodical" id="periodical" class="form-control"><br>
+                <label for="volNum">论文卷号</label>
+                <input type="text" name="volNum" id="volNum" class="form-control"><br>
+                <label for="issueNum">论文期号</label>
+                <input type="text" name="issueNum" id="issueNum" class="form-control"><br>
+                <label for="startPage">论文起始页</label>
+                <input type="text" name="startPage" id="startPage" class="form-control"><br>
+                <label for="endPage">论文结束页</label>
+                <input type="text" name="endPage" id="endPage" class="form-control"><br>
+            </div>
+            <hr>
+            <%--<input type="submit" value="提交论文" onclick="prePost()" class="btn btn-success">--%>
         </form>
     </div>
-    <hr>
-    <div class="panel">
-
-        <input type="text" id="inp" class="form-control">
-        <input type="button" value="添加作者" id="add" class="btn btn-success">
+    <div style="clear: both;"></div>
+    <div style="min-height: 400px;" class="panel">
+        <div class=" col-md-7">
+            <h4>作者列表(包含作者顺序)</h4>
+            <table id="show2" class="table table-hover">
+                <thead><td>作者姓名</td><td>是否通讯作者</td><td>非本数据库用户</td><td>操作</td></thead>
+            </table>
+            <input type="text" id="inp" class="form-control">
+            <input type="button" value="添加作者" id="add" class="btn btn-success">
+            <hr>
+        </div>
+        <div class="col-md-1"></div>
+        <div class=" col-md-4">
+            <h4>论文涉及领域</h4>
+            <hr>
+            <div id="field"></div>
+            <hr>
+            <input type="text" id="inpField" class="form-control">
+            <br>
+            <input type="button" value="添加领域" id="addField" class="btn btn-success">
+            <br>
+        </div>
     </div>
     <hr>
-    <div class="panel">
-        <h4>作者列表</h4>
-        <table id="show2" class="table table-hover">
-            <thead><td>序号</td><td>作者姓名</td><td>是否通讯作者</td><td>非本数据库用户</td><td>操作</td></thead>
-        </table>
-    </div>
-    <hr>
+    <button onclick="prePost()" class="btn btn-warning btn-lg">提交</button>
 </div>
-
 
 </body>
 </html>

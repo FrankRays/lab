@@ -15,11 +15,10 @@ import java.util.List;
  * Created by Jimmy on 2016/7/24.
  */
 public class InformDaoImpl implements InformDao {
-    public List<Inform> getInformsBySenderId(Integer sid,Integer page,Integer num) {
 
+    public List<Inform> getInformsBySenderId(Integer sid,Integer page,Integer num) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
-
         try{
             Query query = session.createQuery("from Inform where userBySenderId.userId=?");
             query.setParameter(0,sid);
@@ -30,17 +29,13 @@ public class InformDaoImpl implements InformDao {
 
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
-            //session.close();
         }
-
         return null;
     }
 
     public List<Inform> getInformsByReceiverId(Integer rid, Integer page, Integer num) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
-
         try{
             Query query = session.createQuery("from Inform where userByReceiverId.userId=?");
             query.setParameter(0,rid);
@@ -51,17 +46,13 @@ public class InformDaoImpl implements InformDao {
 
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
-            //session.close();
         }
         return null;
     }
 
     public boolean addInform(Integer senderId, Integer receiverId, String content) {
-
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
-
         try{
 
             Transaction ts = session.beginTransaction();
@@ -80,7 +71,7 @@ public class InformDaoImpl implements InformDao {
 
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return false;
@@ -96,7 +87,7 @@ public class InformDaoImpl implements InformDao {
             ts.commit();
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
     }

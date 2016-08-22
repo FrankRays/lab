@@ -7,21 +7,23 @@ import shu.lab.entity.Groups;
 import shu.lab.util.HibernateUtil;
 import shu.lab.util.StaticParam;
 
+import java.security.acl.Group;
 import java.util.List;
 
 /**
  * Created by Jimmy on 2016/7/24.
  */
 public class GroupDaoImpl implements GroupDao {
-    public boolean addGroup(String gName) {
+
+    public boolean addGroup(Groups groups) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         try {
-            session.createSQLQuery("INSERT INTO `groups` (group_name) VALUES ('"+gName+"')").executeUpdate();
+            session.saveOrUpdate(groups);
             return true;
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return false;
@@ -36,10 +38,21 @@ public class GroupDaoImpl implements GroupDao {
 
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return false;
+    }
+
+    public Groups getGroupById(Integer gid) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            return session.load(Groups.class, gid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean changeGroupName(Integer gid, String name) {
@@ -50,23 +63,25 @@ public class GroupDaoImpl implements GroupDao {
             return q.executeUpdate() > 0;
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return false;
     }
 
     public boolean changeLeader(Integer gid, Integer lid) {
-        Integer status = 0;
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
+
+        Integer status = 0;
+
         try {
             Query q = session.createSQLQuery("UPDATE `groups` SET leader="+lid+" WHERE group_id="+gid);
             status = q.executeUpdate();
 
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return (status > 0);
@@ -85,7 +100,7 @@ public class GroupDaoImpl implements GroupDao {
             }
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return false;
@@ -95,7 +110,18 @@ public class GroupDaoImpl implements GroupDao {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         try {
-            return session.createQuery("from Groups ").list();
+            return session.createQuery("select groupName from Groups ").list();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List getGroupsByUserId(Integer uid) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            return session.createSQLQuery("SELECT group_name FROM groups g, group_user gu WHERE g.group_id=gu.group_id AND gu.user_id="+uid).list();
         } catch (Exception e){
             e.printStackTrace();
         }

@@ -13,6 +13,7 @@ import shu.lab.util.HibernateUtil;
  * Created by Jimmy on 2016/7/24.
  */
 public class UserPaperDaoImpl implements UserPaperDao {
+
     public void addUserPaper(Integer uid, Integer pid, Integer order, Integer isCorr) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
@@ -26,12 +27,11 @@ public class UserPaperDaoImpl implements UserPaperDao {
             up.setUpOrder(order);
             up.setIsCorr(isCorr);
             session.save(up);
-            //session.createSQLQuery("INSERT INTO user_paper (user_id,paper_id,) ").executeUpdate();
 
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
-            //session.close();
+        }finally {
+            session.close();
         }
     }
 
@@ -47,7 +47,7 @@ public class UserPaperDaoImpl implements UserPaperDao {
 
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
     }

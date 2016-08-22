@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Created by Jimmy on 2016/7/29.
  */
-public class loginAction extends ActionSupport {
+public class LoginAction extends ActionSupport {
     private String username;
     private String password;
     private boolean status;
@@ -32,34 +32,73 @@ public class loginAction extends ActionSupport {
     }
 
     public String login(){
-        System.out.println("loginAction.login");
+        System.out.println("LoginAction.login");
         User u = new UserDaoImpl().getUserByName(username);
         System.out.println(u);
         status = u.getPassword().equals(password);
         if (status){
             Map session = ActionContext.getContext().getSession();
             session.put("user", u);
+
+            String name = u.getUsername();
+            if(u.getEngName() != null){
+                name += "(" + u.getEngName() + ")";
+            }
+
+            String str = "<li class=\"dropdown\">" +
+                    "                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">" +
+                                                name+
+                    "                        <b class=\"caret\"></b>" +
+                    "                    </a>" +
+                    "                    <ul class=\"dropdown-menu\">" +
+                    "                        <li><a href=\"/lab/view?page=userCenter\">个人中心</a></li>" +
+                    "                        <li class=\"divider\"></li>" +
+                    "                        <li><a href=\"#\" id='logout'>退出</a></li>" +
+                    "                    </ul>" +
+                    "                </li>";
+            username = str;
         }
         return SUCCESS;
     }
     public String logout(){
-        System.out.println("loginAction.logout");
+        System.out.println("LoginAction.logout");
         Map session = ActionContext.getContext().getSession();
         status = false;
         if (session != null && session.get("user") != null){
             session.remove("user");
+            username = "<li id='showLogin'><a href='#'>请登录</a></li>";
             status = true;
         }
         return SUCCESS;
     }
     public String currentUser(){
-        System.out.println("loginAction.currentUser");
+        System.out.println("LoginAction.currentUser");
         Map session = ActionContext.getContext().getSession();
         User u = (User)session.get("user");
-        this.username = u.getUsername();
-        if(u.getEngName() != null){
-            this.username += "(" + u.getEngName() + ")";
+        if (u != null){
+
+            String name = u.getUsername();
+            if(u.getEngName() != null){
+                name += "(" + u.getEngName() + ")";
+            }
+
+            String str = "<li class=\"dropdown\">" +
+                    "                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">" +
+                                                name +
+                    "                        <b class=\"caret\"></b>" +
+                    "                    </a>" +
+                    "                    <ul class=\"dropdown-menu\">" +
+                    "                        <li><a href=\"#\">个人中心</a></li>" +
+                    "                        <li class=\"divider\"></li>" +
+                    "                        <li><a href=\"#\">退出</a></li>" +
+                    "                    </ul>" +
+                    "                </li>";
+
+            username = str;
+        } else{
+            username = "<li id='showLogin'><a href='#'>请登录</a></li>";
         }
+
         return SUCCESS;
     }
 }

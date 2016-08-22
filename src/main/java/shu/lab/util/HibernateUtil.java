@@ -16,7 +16,10 @@ public class HibernateUtil {
 	}
 	
 	public Session openSession(){
-		
+/*
+		if (sessionFactory.getCurrentSession() != null){
+			return sessionFactory.getCurrentSession();
+		}*/
 		return sessionFactory.openSession();
 	}
 	

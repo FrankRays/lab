@@ -391,75 +391,78 @@
       <column id="112" parent="13" name="pro_id">
         <data-type>int(11)</data-type>
       </column>
-      <index id="113" parent="13" name="FKcexstr0pox4xl6j1mbree6meq">
+      <column id="113" parent="13" name="up_order">
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="114" parent="13" name="FKcexstr0pox4xl6j1mbree6meq">
         <columns>pro_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="114" parent="13" name="FKpw81exe7fsdl7mddqujvu91kx">
+      <index id="115" parent="13" name="FKpw81exe7fsdl7mddqujvu91kx">
         <columns>user_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="115" parent="13" name="PRIMARY">
+      <key id="116" parent="13" name="PRIMARY">
         <columns>up_id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="116" parent="13" name="FKcexstr0pox4xl6j1mbree6meq">
+      <foreign-key id="117" parent="13" name="FKcexstr0pox4xl6j1mbree6meq">
         <columns>pro_id</columns>
         <ref-key>~.project.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="117" parent="13" name="FKpw81exe7fsdl7mddqujvu91kx">
+      <foreign-key id="118" parent="13" name="FKpw81exe7fsdl7mddqujvu91kx">
         <columns>user_id</columns>
         <ref-key>~.user.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="118" parent="14" name="gu_id">
+      <column id="119" parent="14" name="gu_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="119" parent="14" name="user_id">
+      <column id="120" parent="14" name="user_id">
         <data-type>int(11)</data-type>
       </column>
-      <column id="120" parent="14" name="group_id">
+      <column id="121" parent="14" name="group_id">
         <data-type>int(11)</data-type>
       </column>
-      <index id="121" parent="14" name="FK6u7jb50qa69gr3505uttxm86x">
+      <index id="122" parent="14" name="FK6u7jb50qa69gr3505uttxm86x">
         <columns>user_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="122" parent="14" name="FKm4p7t99vp509n4lt2et6hqkgn">
+      <index id="123" parent="14" name="FKm4p7t99vp509n4lt2et6hqkgn">
         <columns>group_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="123" parent="14" name="PRIMARY">
+      <key id="124" parent="14" name="PRIMARY">
         <columns>gu_id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="124" parent="14" name="FK6u7jb50qa69gr3505uttxm86x">
+      <foreign-key id="125" parent="14" name="FK6u7jb50qa69gr3505uttxm86x">
         <columns>user_id</columns>
         <ref-key>~.user.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="125" parent="14" name="FKm4p7t99vp509n4lt2et6hqkgn">
+      <foreign-key id="126" parent="14" name="FKm4p7t99vp509n4lt2et6hqkgn">
         <columns>group_id</columns>
         <ref-key>~.groups.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="126" parent="15" name="group_id">
+      <column id="127" parent="15" name="group_id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
       </column>
-      <column id="127" parent="15" name="group_name">
+      <column id="128" parent="15" name="group_name">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="128" parent="15" name="leader">
+      <column id="129" parent="15" name="leader">
         <data-type>int(11)</data-type>
       </column>
-      <key id="129" parent="15" name="PRIMARY">
+      <key id="130" parent="15" name="PRIMARY">
         <columns>group_id</columns>
         <primary>1</primary>
       </key>

@@ -20,12 +20,13 @@ import java.util.Map;
  * Created by Jimmy on 2016/7/24.
  */
 public class PaperDaoImpl implements PaperDao {
+
     public List<Paper> getLatestTenPaper() {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         try {
             return session.createQuery("from Paper order by paperId desc ")
-                    .setMaxResults(10).list();
+                    .setMaxResults(3).list();
 
         } catch (Exception e){
             e.printStackTrace();
@@ -33,8 +34,21 @@ public class PaperDaoImpl implements PaperDao {
         return null;
     }
 
-    public List<Paper> getFamousTenPaper() {
+    public List<Paper> getAllPaper(Integer page, Integer num) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        try {
+            return session.createQuery("from Paper order by paperId desc")
+                    .setFirstResult((page-1)*num).setMaxResults(num).list();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    public List<Paper> getFamousTenPaper() {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
         return null;
     }
 
@@ -81,11 +95,16 @@ public class PaperDaoImpl implements PaperDao {
     public Integer addPaper(Paper paper) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
+        Transaction ts = session.beginTransaction();
         try {
-            session.save(paper);
+            session.saveOrUpdate(paper);
+            ts.commit();
+
             return paper.getPaperId();
         } catch (Exception e){
             e.printStackTrace();
+        }finally {
+            session.close();
         }
 
         return 0;
@@ -96,18 +115,22 @@ public class PaperDaoImpl implements PaperDao {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         Transaction ts = session.beginTransaction();
+
+        if (authors.size() <= 0){
+            return false;
+        }
+
         try{
 
             ts.begin();
-/*
 
-            session.save(paper);
-            Integer pid = paper.getPaperId();
-*/
             /** delete previous authors from DB */
-            session.createSQLQuery("DELETE FROM user_paper WHERE paper_id="+pId);
+            session.createSQLQuery("DELETE FROM user_paper WHERE paper_id="+pId).executeUpdate();
 
             /** and add it again */
+
+            List extraList = new ArrayList();
+            //List extraCorrList = new ArrayList();
 
             for (int i = 0; i < authors.size(); i++) {
                 Map author = (Map) authors.get(i);
@@ -118,8 +141,7 @@ public class PaperDaoImpl implements PaperDao {
                 /** 作者序号 */
                 Integer order = (Integer) author.get("order");
 
-                List extraList = new ArrayList();
-                List extraCorrList = new ArrayList();
+
                 /** 如果是数据库中的用户*/
                 if (isExtra == 0){
                     /** get user by name */
@@ -127,15 +149,11 @@ public class PaperDaoImpl implements PaperDao {
                     User u = new UserDaoImpl().getUserByName(userName.trim());
                     /** 如果标签标识 是数据库用户，但是在哎数据库中没有查找到，同样添加到extraAuthors 中 */
                     if (u == null){
-                        if (isCorr != 1) {
-                            extraList.add(author);
-                        } else {
-                            extraCorrList.add(author);
-                        }
+                        author.put("isExtra", 1);
+                        extraList.add(author);
                     }else{
                         Query q = session.createSQLQuery("INSERT INTO user_paper (user_id, paper_id, up_order, is_corr)" +
                                 " VALUES ("+u.getUserId()+", "+pId+", "+ order +", "+isCorr+")");
-
                         q.executeUpdate();
                     }
                 }
@@ -143,37 +161,19 @@ public class PaperDaoImpl implements PaperDao {
                  * 若不是数据库的用户, 将所有不是数据库内的用户重新组成一个List，
                  * */
                 else {
-                    if (isCorr != 1){
-                        extraList.add(author);
-                    } else {
-                        extraCorrList.add(author);
-                    }
+                    extraList.add(author);
                 }
-                /** 如果有库外作者 */
-                if (extraList.size() > 0) {
-
-                    Map map = new HashMap();
-                    map.put("list", extraList);
-                    JSONObject json = JSONObject.fromObject(map);
-                    /** toJSONString 之后以字符形式存入数据库 */
-                    Query q = session.createQuery("update Paper p set p.extraAuthor = ?");
-                    q.setParameter(0, json.toString());
-                    q.executeUpdate();
-                }
-                /** 如果有库外通讯作者 */
-                if (extraCorrList.size() > 0) {
-
-                    Map map = new HashMap();
-                    map.put("list", extraCorrList);
-                    JSONObject json = JSONObject.fromObject(map);
-                    /** toJSONString 之后以字符形式存入数据库 */
-                    Query q = session.createQuery("update Paper p set p.extraCorrAuthor = ?");
-                    q.setParameter(0, json.toString());
-                    q.executeUpdate();
-                }
-
             }
+            /** 如果有库外作者 */
+            if (extraList.size() > 0) {
 
+                Map map = new HashMap();
+                map.put("list", extraList);
+                JSONObject json = JSONObject.fromObject(map);
+                /** toJSONString 之后以字符形式存入数据库 */
+                Query q = session.createSQLQuery("UPDATE paper SET extra_author = '"+json.toString()+"' WHERE paper_id="+pId);
+                q.executeUpdate();
+            }
             ts.commit();
             return true;
 
@@ -184,7 +184,7 @@ public class PaperDaoImpl implements PaperDao {
              **/
             ts.rollback();
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return false;
@@ -201,37 +201,58 @@ public class PaperDaoImpl implements PaperDao {
             ts.commit();
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
     }
 
-    public Integer addDelPaperField(Integer pid, Integer fid, Integer type) {
+    public boolean modifyFields(Integer pid, List fields) {
+        HibernateUtil util = new HibernateUtil();
+        Session session = util.openSession();
+        Transaction ts = session.beginTransaction();
+        try {
+            ts.begin();
+            /** delete previous fields of current paper*/
+            session.createSQLQuery("DELETE FROM field_paper WHERE paper_id="+pid).executeUpdate();
+            /** add new fields */
+            for (Object obj:fields) {
+                String field = (String) obj;
+                /** get field_id by field description */
+                Integer fid = (Integer) session.createSQLQuery("SELECT field_id FROM field WHERE field_descr='"+field+"'").uniqueResult();
+                /** add it */
+                session.createSQLQuery("INSERT INTO field_paper (field_id, paper_id) VALUES ("+fid+", "+pid+")")
+                        .executeUpdate();
+            }
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            ts.rollback();
+        }finally {
+            session.close();
+        }
+        return false;
+    }
+
+    public List getInnerAuthorsByPaperId(Integer pid) {
         HibernateUtil util = new HibernateUtil();
         Session session = util.openSession();
         try {
-            /*Transaction ts = session.beginTransaction();
-            ts.begin();
-            Paper p = session.load(Paper.class, pid);
-            Field f = session.load(Field.class, fid);
-            p.getFieldPapers().add(f);
-            session.save(p);
-            ts.commit();*/
-            //session.createSQLQuery("INSERT INTO field_paper (field_id, paper_id) VALUES ("+fid+","+pid+")").executeUpdate();
-            if (type == StaticParam.ADD){
-
-                return session.createSQLQuery("INSERT INTO field_paper (field_id, paper_id) VALUES ("+fid+", "+pid+")")
-                        .executeUpdate();
-            } else {
-                return session.createSQLQuery("DELETE FROM field_paper WHERE paper_id="+pid+" AND field_id="+fid)
-                        .executeUpdate();
+            session.clear();
+            List list = session.createQuery("select new map (u.username as name, up.upOrder as order, up.isCorr as isCorr) " +
+                    "from UserPaper up join up.user u join up.paper p WHERE p.paperId="+pid).list();
+            /** add the attribute isExtra=0 to identify the user is exist in DB */
+            if (list != null){
+                for (Object obj:list) {
+                    Map author = (Map) obj;
+                    author.put("isExtra", 0);
+                }
             }
+
+            return list;
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
-            session.close();
         }
-        return -1;
+        return null;
     }
 
     public Integer addDelPaperMember(Integer pid, Integer uid, Integer type, Integer isCorr) {
@@ -265,15 +286,11 @@ public class PaperDaoImpl implements PaperDao {
                         "WHERE paper_id="+pid+" AND user_id="+uid+" AND is_corr="+isCorr);
                 return q.executeUpdate();
             }
-            /*Query q = session.createQuery(sql);
-            q.setParameter(0, pid);
-            q.setParameter(1, uid);
-            q.setParameter(2, isCorr);
-            return q.executeUpdate();*/
+
         } catch (Exception e){
             ts.rollback();
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return -1;
@@ -345,7 +362,7 @@ public class PaperDaoImpl implements PaperDao {
         } catch (Exception e){
             ts.rollback();
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return status;
@@ -364,7 +381,7 @@ public class PaperDaoImpl implements PaperDao {
             }
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             session.close();
         }
         return 0;
