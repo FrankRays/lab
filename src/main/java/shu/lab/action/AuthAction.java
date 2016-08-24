@@ -70,7 +70,6 @@ public class AuthAction extends ActionSupport implements ModelDriven {
     }
     /** change the group name */
     public String chgName(){
-
         if(gdi.changeGroupName(groupId, groupName)){
             status = "success";
         }
