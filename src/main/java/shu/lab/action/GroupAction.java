@@ -12,6 +12,8 @@ public class GroupAction extends ActionSupport implements ModelDriven {
     private Groups groups = new Groups();
     private String status;
 
+    GroupDaoImpl gdi = new GroupDaoImpl();
+
     public String getStatus() {
         return status;
     }
@@ -21,7 +23,17 @@ public class GroupAction extends ActionSupport implements ModelDriven {
     }
 
     public void addGroup(){
-        new GroupDaoImpl().addGroup(groups);
+        /** 如果提供groupId 且这个ID在数据库中已经存在，就会更新这个group*/
+        gdi.addGroup(groups);
+    }
 
+    /** 需要 Integer groupId*/
+    public void delGroup(){
+
+        if (gdi.delGroup(groups.getGroupId())){
+            status = "success";
+        } else {
+            status = "failed";
+        }
     }
 }

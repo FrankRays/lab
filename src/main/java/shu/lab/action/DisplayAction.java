@@ -171,12 +171,12 @@ public class DisplayAction extends ActionSupport {
         rtn.put("pros", pros);
         return SUCCESS;
     }
-
+    /** 返回该小组信息，以及该组组员 */
     public String group(){
         Groups groups;
         return SUCCESS;
     }
-
+    /** 所有小组信息 以及小组所有成员 */
     public String groupList(){
 
         return SUCCESS;

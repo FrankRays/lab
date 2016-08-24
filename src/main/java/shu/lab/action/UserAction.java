@@ -12,7 +12,7 @@ import shu.lab.util.StaticParam;
  * Created by Jimmy on 2016/8/4.
  */
 public class UserAction extends ActionSupport implements ModelDriven {
-    private User user;
+    private User user = new User();
 
     public Object getModel() {
         return user;
